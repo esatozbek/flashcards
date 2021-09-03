@@ -6,7 +6,7 @@ export const WRAPPER_STYLE = {
     position: 'relative' as StylePropertyValue<any>,
     height: `${DECK_HEIGHT}px`,
     width: `${DECK_WIDTH}px`,
-    margin: 5,
+    // margin: 5,
     cursor: 'pointer',
 };
 
