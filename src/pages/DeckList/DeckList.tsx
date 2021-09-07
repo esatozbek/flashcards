@@ -1,23 +1,32 @@
 /** @jsxImportSource theme-ui */
-import { ReactElement } from 'react';
+import { ReactElement, useCallback } from 'react';
+import { useAtom } from 'jotai';
 import Deck from 'components/Deck';
 import Button from 'components/Button';
+import Modal from 'components/Modal';
+import { isDeckModalOpenAtom } from 'atoms/modalAtoms';
+import { CONTAINER_STYLE, TOP_CONTAINER_STYLE, DECK_CONTAINER_STYLE } from './DeckList.style';
 
 function DeckList(): ReactElement {
+    const [isDeckModalOpen, setDeckModalOpen] = useAtom(isDeckModalOpenAtom);
+
+    const handleOpenModal = useCallback(() => {
+        setDeckModalOpen(true);
+    }, [setDeckModalOpen]);
+
+    const handleCloseModal = useCallback(() => {
+        setDeckModalOpen(false);
+    }, [setDeckModalOpen]);
+
     return (
-        <div sx={{ mx: '100px', mt: '24px' }}>
-            <div sx={{ display: 'flex', alignItems: 'flex-end', flexDirection: 'column' }}>
-                <Button>New Deck</Button>
+        <div sx={CONTAINER_STYLE}>
+            <Modal showModal={isDeckModalOpen} onCloseModal={handleCloseModal}>
+                New Deck
+            </Modal>
+            <div sx={TOP_CONTAINER_STYLE}>
+                <Button onClick={handleOpenModal}>New Deck</Button>
             </div>
-            <div
-                sx={{
-                    display: 'grid',
-                    gridTemplateColumns: 'auto auto auto',
-                    rowGap: '32px',
-                    columnGap: '32px',
-                    mt: '24px',
-                }}
-            >
+            <div sx={DECK_CONTAINER_STYLE}>
                 {Array(5)
                     .fill(0)
                     .map(() => (
