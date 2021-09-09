@@ -62,5 +62,5 @@ export const BOTTOM_BOX_STYLE = {
     height: '50px',
     width: '100%',
     zIndex: 100,
-    filter: 'blur(2px)',
+    // filter: 'blur(2px)',
 };

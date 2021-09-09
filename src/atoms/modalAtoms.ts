@@ -1,3 +1,3 @@
 import { atom } from 'jotai';
 
-export const isDeckModalOpenAtom = atom(true);
+export const isDeckModalOpenAtom = atom(false);

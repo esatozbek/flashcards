@@ -9,7 +9,7 @@ const routes: RouteProps[] = [
         exact: true,
     },
     {
-        path: '/cardlist',
+        path: '/deck',
         component: CardList,
     },
 ];

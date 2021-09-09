@@ -1,6 +1,6 @@
 const fonts = {
     fonts: {
-        body: 'BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
+        body: '"Bebas Neue", BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
         heading: 'Georgia, serif',
         monospace: 'Menlo, monospace',
     },

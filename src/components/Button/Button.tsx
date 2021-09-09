@@ -2,11 +2,12 @@
 import { ReactElement } from 'react';
 import { ButtonPropTypes } from './Button.types';
 import { BUTTON_STYLE } from './Button.styles';
+import { Text } from 'components/Typography';
 
-function Button({ children, onClick }: ButtonPropTypes): ReactElement {
+function Button({ text, onClick }: ButtonPropTypes): ReactElement {
     return (
         <button sx={BUTTON_STYLE} onClick={onClick}>
-            {children}
+            <Text fontSize={3}>{text}</Text>
         </button>
     );
 }

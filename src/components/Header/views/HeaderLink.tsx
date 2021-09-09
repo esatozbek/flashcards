@@ -1,10 +1,11 @@
 /** @jsxImportSource theme-ui */
 import { ReactElement } from 'react';
+import { Text } from 'components/Typography';
 import { HeaderLinkPropTypes } from './HeaderLink.types';
 
 function HeaderLink({ children }: HeaderLinkPropTypes): ReactElement {
     return (
-        <a
+        <div
             sx={{
                 color: 'text',
                 textDecoration: 'none',
@@ -15,11 +16,11 @@ function HeaderLink({ children }: HeaderLinkPropTypes): ReactElement {
                 '&:hover': {
                     bg: 'secondary',
                 },
+                cursor: 'pointer',
             }}
-            href="#"
         >
-            {children}
-        </a>
+            <Text fontSize={4}>{children}</Text>
+        </div>
     );
 }
 

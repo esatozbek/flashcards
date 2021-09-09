@@ -1,7 +1,5 @@
-import { ReactElement } from 'react';
-
 export type ButtonPropTypes = {
-    children: ReactElement | string;
+    text: string;
     onClick?: () => void;
 };
 

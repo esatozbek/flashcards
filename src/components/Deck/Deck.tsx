@@ -1,5 +1,6 @@
 /** @jsxImportSource theme-ui */
 import { ReactElement, useState, useCallback } from 'react';
+import { DeckPropTypes } from './Deck.types';
 import {
     WRAPPER_STYLE,
     FIRST_CARD_STYLE,
@@ -10,7 +11,7 @@ import {
     BOTTOM_BOX_STYLE,
 } from './Deck.styles';
 
-function Deck(): ReactElement {
+function Deck({ deck, onDeckClick }: DeckPropTypes): ReactElement {
     const [isHover, setHover] = useState<boolean>(false);
 
     const onMouseEnter = useCallback(() => {
@@ -21,8 +22,17 @@ function Deck(): ReactElement {
         setHover(false);
     }, [setHover]);
 
+    const handleDeckClick = useCallback(() => {
+        onDeckClick(deck);
+    }, [deck, onDeckClick]);
+
     return (
-        <div sx={WRAPPER_STYLE} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+        <div
+            sx={WRAPPER_STYLE}
+            onClick={handleDeckClick}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+        >
             <div sx={FIRST_CARD_STYLE}></div>
             <div
                 sx={{
@@ -36,7 +46,7 @@ function Deck(): ReactElement {
                     ...(isHover && THIRD_CARD_HOVER_STYLE),
                 }}
             ></div>
-            <div sx={BOTTOM_BOX_STYLE}></div>
+            <div sx={BOTTOM_BOX_STYLE}>{deck.deckName}</div>
         </div>
     );
 }

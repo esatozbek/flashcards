@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export type HeaderLinkPropTypes = {
+export type ModalContainerPropTypes = {
+    title: string;
     children: ReactNode;
-    onClick?: () => void;
 };

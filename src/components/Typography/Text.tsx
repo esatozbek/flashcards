@@ -8,7 +8,7 @@ function Text({ children, fontSize = 2 }: TextPropTypes): ReactElement {
             sx={{
                 fontFamily: 'body',
                 fontWeight: 'body',
-                lineHeight: 'body',
+                lineHeight: 'heading',
                 letterSpacing: 'body',
                 fontSize,
             }}

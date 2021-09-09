@@ -1,6 +1,6 @@
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 
 export type TextPropTypes = {
-    children: ReactElement | string;
+    children: ReactNode;
     fontSize?: 0 | 1 | 2 | 3 | 4 | 5;
 };
