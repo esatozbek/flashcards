@@ -1,12 +1,17 @@
 import { atom } from 'jotai';
-import { v4 as uuidv4 } from 'uuid';
 import { TCard } from 'types/card.types';
 
-export const cardsAtom = atom<TCard[]>(
-    Array(5)
-        .fill(0)
-        .map((_, i) => ({
-            uuid: uuidv4(),
+import { decksAtom } from './deckAtoms';
+
+type TCardsAtom = {
+    [key: string]: TCard;
+};
+
+export const cardsAtom = atom<TCardsAtom>((get) =>
+    get(decksAtom)
+        .flatMap((deck) => deck.cardIds)
+        .map((cardUuid, i) => ({
+            uuid: cardUuid,
             creationDate: Date.now(),
             frontContent: `Front ${i}`,
             backContent: `Back ${i}`,
@@ -15,4 +20,8 @@ export const cardsAtom = atom<TCard[]>(
                 flipCount: 0,
             },
         }))
+        .reduce<TCardsAtom>((acc: TCardsAtom, card) => {
+            acc[card.uuid] = card;
+            return acc;
+        }, {})
 );

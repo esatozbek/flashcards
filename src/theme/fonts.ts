@@ -1,7 +1,7 @@
 const fonts = {
     fonts: {
-        body: '"Bebas Neue", BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
-        heading: 'Georgia, serif',
+        body: '"Bebas Neue", "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
+        heading: 'BlinkMacSystemFont, Georgia, serif',
         monospace: 'Menlo, monospace',
     },
     fontSizes: [12, 14, 16, 20, 24, 32, 48, 64],

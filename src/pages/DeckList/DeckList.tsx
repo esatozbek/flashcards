@@ -25,7 +25,7 @@ function DeckList(): ReactElement {
 
     const handleCreateDeck = useCallback(
         (deckName) => {
-            setDecks((prevDecks) => [...prevDecks, { deckName }]);
+            setDecks((prevDecks) => [...prevDecks, { deckName, cardIds: [] }]);
             setDeckModalOpen(false);
         },
         [setDecks, setDeckModalOpen]

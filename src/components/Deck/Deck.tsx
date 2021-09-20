@@ -1,5 +1,6 @@
 /** @jsxImportSource theme-ui */
 import { ReactElement, useState, useCallback } from 'react';
+import { Text } from 'components/Typography';
 import { DeckPropTypes } from './Deck.types';
 import {
     WRAPPER_STYLE,
@@ -46,7 +47,9 @@ function Deck({ deck, onDeckClick }: DeckPropTypes): ReactElement {
                     ...(isHover && THIRD_CARD_HOVER_STYLE),
                 }}
             ></div>
-            <div sx={BOTTOM_BOX_STYLE}>{deck.deckName}</div>
+            <div sx={BOTTOM_BOX_STYLE}>
+                <Text fontSize={3}>{deck.deckName}</Text>
+            </div>
         </div>
     );
 }

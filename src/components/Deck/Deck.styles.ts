@@ -59,8 +59,9 @@ export const BOTTOM_BOX_STYLE = {
     bottom: 0,
     left: 0,
     bg: 'rgba(67, 67, 67, .6)',
-    height: '50px',
     width: '100%',
     zIndex: 100,
+    p: 3,
+    color: 'white',
     // filter: 'blur(2px)',
 };
