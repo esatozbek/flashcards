@@ -5,7 +5,14 @@ import getModalRoot from 'utils/getModalRoot';
 import { ModalPropTypes } from './Modal.types';
 import ModalContainer from './views/ModalContainer';
 
-function Modal({ title, showModal, onCloseModal, children }: ModalPropTypes): ReactElement | null {
+function Modal({
+    title,
+    showModal,
+    onCloseModal,
+    children,
+    direction = 'bottom',
+    absoluteContent,
+}: ModalPropTypes): ReactElement | null {
     const elRef = useRef(document.createElement('div'));
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -44,7 +51,12 @@ function Modal({ title, showModal, onCloseModal, children }: ModalPropTypes): Re
 
     if (showModal) {
         return ReactDOM.createPortal(
-            <ModalContainer ref={containerRef} title={title}>
+            <ModalContainer
+                ref={containerRef}
+                title={title}
+                direction={direction}
+                absoluteContent={absoluteContent}
+            >
                 {children}
             </ModalContainer>,
             elRef.current

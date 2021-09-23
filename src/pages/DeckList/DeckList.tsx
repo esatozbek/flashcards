@@ -5,30 +5,31 @@ import { useAtom } from 'jotai';
 import Deck from 'components/Deck';
 import Button from 'components/Button';
 import CreateDeckModal from 'modals/CreateDeckModal';
-import { isDeckModalOpenAtom } from 'atoms/modalAtoms';
-import { decksAtom } from 'atoms/deckAtoms';
+import { isModalOpenAtom } from 'atoms/modalAtoms';
+import { decksAtom, addDeckAtom } from 'atoms/deckAtoms';
 import { CONTAINER_STYLE, TOP_CONTAINER_STYLE, DECK_CONTAINER_STYLE } from './DeckList.style';
 import { TDeck } from 'types/deck.types';
 
 function DeckList(): ReactElement {
     const history = useHistory();
-    const [isDeckModalOpen, setDeckModalOpen] = useAtom(isDeckModalOpenAtom);
-    const [decks, setDecks] = useAtom(decksAtom);
+    const [isModalOpen, setModalOpen] = useAtom(isModalOpenAtom);
+    const [decks] = useAtom(decksAtom);
+    const [, addDeck] = useAtom(addDeckAtom);
 
     const handleOpenModal = useCallback(() => {
-        setDeckModalOpen(true);
-    }, [setDeckModalOpen]);
+        setModalOpen(true);
+    }, [setModalOpen]);
 
     const handleCloseModal = useCallback(() => {
-        setDeckModalOpen(false);
-    }, [setDeckModalOpen]);
+        setModalOpen(false);
+    }, [setModalOpen]);
 
     const handleCreateDeck = useCallback(
         (deckName) => {
-            setDecks((prevDecks) => [...prevDecks, { deckName, cardIds: [] }]);
-            setDeckModalOpen(false);
+            addDeck({ deckName, cardIds: [] });
+            setModalOpen(false);
         },
-        [setDecks, setDeckModalOpen]
+        [addDeck, setModalOpen]
     );
 
     const handleDeckClick = useCallback(
@@ -42,7 +43,7 @@ function DeckList(): ReactElement {
         <div sx={CONTAINER_STYLE}>
             <CreateDeckModal
                 onCreateDeck={handleCreateDeck}
-                isDeckModalOpen={isDeckModalOpen}
+                isDeckModalOpen={isModalOpen}
                 onCloseModal={handleCloseModal}
             />
             <div sx={TOP_CONTAINER_STYLE}>

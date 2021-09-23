@@ -5,4 +5,6 @@ export type ModalPropTypes = {
     showModal: boolean;
     onCloseModal?: () => void;
     children: ReactNode;
+    direction?: 'right' | 'bottom';
+    absoluteContent?: ReactNode;
 };

@@ -3,11 +3,11 @@ import { ReactElement } from 'react';
 import { useAtom } from 'jotai';
 import Header from 'components/Header';
 import { DefaultLayoutPropTypes } from './DefaultLayout.types';
-import { isDeckModalOpenAtom } from 'atoms/modalAtoms';
+import { isModalOpenAtom } from 'atoms/modalAtoms';
 import { CONTAINER_STYLE, MODAL_OPENED_FILTER } from './DefaultLayout.styles';
 
 function DefaultLayout({ children }: DefaultLayoutPropTypes): ReactElement {
-    const [showModal] = useAtom(isDeckModalOpenAtom);
+    const [showModal] = useAtom(isModalOpenAtom);
 
     return (
         <div sx={{ ...CONTAINER_STYLE, ...(showModal && MODAL_OPENED_FILTER) }}>

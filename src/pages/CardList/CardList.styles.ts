@@ -1,14 +1,13 @@
 export const CONTAINER_STYLE = {
     mx: 7,
-    mt: 4,
+    my: 4,
 };
 
 export const HEADER_CONTAINER_STYLE = {
     m: 3,
-    borderBottom: '6px solid black',
-    width: '55%',
-    py: 3,
-    px: 2,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
 };
 
 export const CARD_CONTAINER_STYLE = {
