@@ -34,7 +34,7 @@ function DeckList(): ReactElement {
 
     const handleDeckClick = useCallback(
         (deck: TDeck) => {
-            history.push('/deck', { deck });
+            history.push('/deck', { deckId: deck.deckId });
         },
         [history]
     );
@@ -50,8 +50,8 @@ function DeckList(): ReactElement {
                 <Button onClick={handleOpenModal} text="New Deck" />
             </div>
             <div sx={DECK_CONTAINER_STYLE}>
-                {decks.map((deck) => (
-                    <Deck deck={deck} onDeckClick={handleDeckClick} />
+                {Object.values(decks).map((deck) => (
+                    <Deck key={deck.deckId} deck={deck} onDeckClick={handleDeckClick} />
                 ))}
             </div>
         </div>

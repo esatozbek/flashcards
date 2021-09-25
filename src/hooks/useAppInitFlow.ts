@@ -8,25 +8,24 @@ function useAppInitFlow() {
     const [, setCards] = useAtom(cardsAtom);
 
     useEffect(() => {
-        const cardItems = decks
-            .flatMap((deck) => deck.cardIds)
-            .map((cardUuid, i) => ({
-                uuid: cardUuid,
-                creationDate: Date.now(),
-                frontContent: `Front ${i}`,
-                backContent: `Back ${i}`,
-                statistics: {
-                    practiceCount: 0,
-                    flipCount: 0,
-                },
-            }))
-            .reduce<TCardsAtom>((acc: TCardsAtom, card) => {
-                acc[card.uuid] = card;
-                return acc;
-            }, {});
-        setCards(cardItems);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        // const cardItems = Object.values(decks)
+        //     .flatMap((deck) => deck.cardIds)
+        //     .map((cardUuid, i) => ({
+        //         uuid: cardUuid,
+        //         creationDate: Date.now(),
+        //         frontContent: `Front ${i}`,
+        //         backContent: `Back ${i}`,
+        //         statistics: {
+        //             practiceCount: 0,
+        //             flipCount: 0,
+        //         },
+        //     }))
+        //     .reduce<TCardsAtom>((acc: TCardsAtom, card) => {
+        //         acc[card.uuid] = card;
+        //         return acc;
+        //     }, {});
+        // setCards(cardItems);
+    }, [decks, setCards]);
 }
 
 export default useAppInitFlow;

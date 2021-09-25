@@ -1,4 +1,5 @@
 import { atom } from 'jotai';
+import { atomWithStorage } from 'jotai/utils';
 import { v4 as uuidv4 } from 'uuid';
 import { TCard } from 'types/card.types';
 
@@ -8,38 +9,15 @@ export type TCardsAtom = {
     [key: string]: TCard;
 };
 
-// export const cardsAtom = atom<TCardsAtom, TCardsAtom>(
-//     (get) =>
-//         get(decksAtom)
-//             .flatMap((deck) => deck.cardIds)
-//             .map((cardUuid, i) => ({
-//                 uuid: cardUuid,
-//                 creationDate: Date.now(),
-//                 frontContent: `Front ${i}`,
-//                 backContent: `Back ${i}`,
-//                 statistics: {
-//                     practiceCount: 0,
-//                     flipCount: 0,
-//                 },
-//             }))
-//             .reduce<TCardsAtom>((acc: TCardsAtom, card) => {
-//                 acc[card.uuid] = card;
-//                 return acc;
-//             }, {}),
-//     (_get, set, update) => {
-//         set(cardsAtom, update);
-//     }
-// );
-
-export const cardsAtom = atom<TCardsAtom>({});
+export const cardsAtom = atomWithStorage<TCardsAtom>('flashcards_cards', {});
 
 export const addCardAtom = atom<
     null,
     { frontContent: string; backContent: string; deckId: string }
->(null, (get, set, action) => {
-    const cardUuid = uuidv4();
+>(null, (_get, set, action) => {
+    const newCardUuid = uuidv4();
     const newCard: TCard = {
-        uuid: cardUuid,
+        uuid: newCardUuid,
         frontContent: action.frontContent,
         backContent: action.backContent,
         creationDate: Date.now(),
@@ -50,11 +28,11 @@ export const addCardAtom = atom<
     };
     set(cardsAtom, (cards) => ({ ...cards, [newCard.uuid]: newCard }));
     set(decksAtom, (decks) => {
-        const deckCopy = [...decks];
-        const deck = deckCopy.find((deck) => deck.deckId === action.deckId);
+        const decksCopy = { ...decks };
+        const deck = decksCopy[action.deckId];
         if (deck) {
-            deck.cardIds = [...deck.cardIds, cardUuid];
+            deck.cardIds = [...deck.cardIds, newCardUuid];
         }
-        return [...decks];
+        return decksCopy;
     });
 });
