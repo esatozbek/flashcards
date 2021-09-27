@@ -27,7 +27,7 @@ function AddCardModal({ isModalOpen, onCloseModal, onAddCard }: AddCardModalProp
     const handleAddCard = useCallback(() => {
         onAddCard(frontContent, backContent);
         onCloseModal();
-    }, [onAddCard, frontContent, backContent]);
+    }, [onAddCard, frontContent, backContent, onCloseModal]);
 
     return (
         <Modal

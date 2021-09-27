@@ -1,11 +1,12 @@
 /** @jsxImportSource theme-ui */
-import { ReactElement, useCallback, useEffect } from 'react';
+import { ReactElement, useState, useCallback, useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useAtom } from 'jotai';
 import { Text } from 'components/Typography';
 import Button from 'components/Button';
 import Card from 'components/Card';
 import AddCardModal from 'modals/AddCardModal';
+import PracticeModal from 'modals/PracticeModal';
 import { cardsAtom, addCardAtom } from 'atoms/cardAtoms';
 import { decksAtom } from 'atoms/deckAtoms';
 import { isModalOpenAtom } from 'atoms/modalAtoms';
@@ -20,6 +21,8 @@ function CardList(): ReactElement {
     const [decks] = useAtom(decksAtom);
     const [, addCard] = useAtom(addCardAtom);
     const [isModalOpen, setModalOpen] = useAtom(isModalOpenAtom);
+    const [isAddCardModalOpen, setAddCardModalOpen] = useState<boolean>(false);
+    const [isPracticeModalOpen, setPracticeModalOpen] = useState<boolean>(false);
     const { deckId } = location.state;
     const deck = decks[deckId || ''];
     console.log(deck);
@@ -35,13 +38,25 @@ function CardList(): ReactElement {
         history.goBack();
     }, [history]);
 
-    const onCloseModal = useCallback(() => {
+    const onCloseAddCardModal = useCallback(() => {
         setModalOpen(false);
-    }, [setModalOpen]);
+        setAddCardModalOpen(false);
+    }, [setModalOpen, setAddCardModalOpen]);
 
-    const onOpenModal = useCallback(() => {
+    const onOpenAddCardModal = useCallback(() => {
         setModalOpen(true);
-    }, [setModalOpen]);
+        setAddCardModalOpen(true);
+    }, [setModalOpen, setAddCardModalOpen]);
+
+    const onClosePracticeModal = useCallback(() => {
+        setModalOpen(false);
+        setPracticeModalOpen(false);
+    }, [setModalOpen, setPracticeModalOpen]);
+
+    const onOpenPracticeModal = useCallback(() => {
+        setModalOpen(true);
+        setPracticeModalOpen(true);
+    }, [setModalOpen, setPracticeModalOpen]);
 
     const handleAddCard = useCallback(
         (frontContent: string, backContent: string) => {
@@ -71,7 +86,10 @@ function CardList(): ReactElement {
                     <Text fontSize={5}>{deck?.deckName}</Text>
                 </div>
 
-                <Button text="Add Card" onClick={onOpenModal} />
+                <div>
+                    <Button text="Add Card" onClick={onOpenAddCardModal} />
+                    <Button text="Practice Deck" onClick={onOpenPracticeModal} />
+                </div>
             </div>
 
             <div sx={CARD_CONTAINER_STYLE}>
@@ -80,10 +98,11 @@ function CardList(): ReactElement {
                 ))}
             </div>
             <AddCardModal
-                isModalOpen={isModalOpen}
-                onCloseModal={onCloseModal}
+                isModalOpen={isAddCardModalOpen}
+                onCloseModal={onCloseAddCardModal}
                 onAddCard={handleAddCard}
             />
+            <PracticeModal showModal={isPracticeModalOpen} onCloseModal={onClosePracticeModal} />
         </div>
     );
 }
