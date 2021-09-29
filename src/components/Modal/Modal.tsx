@@ -12,6 +12,7 @@ function Modal({
     children,
     direction = 'bottom',
     absoluteContent,
+    modalBodyVisible = true,
 }: ModalPropTypes): ReactElement | null {
     const elRef = useRef(document.createElement('div'));
     const containerRef = useRef<HTMLDivElement>(null);
@@ -56,6 +57,7 @@ function Modal({
                 title={title}
                 direction={direction}
                 absoluteContent={absoluteContent}
+                modalBodyVisible={modalBodyVisible}
             >
                 {children}
             </ModalContainer>,

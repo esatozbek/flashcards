@@ -11,7 +11,13 @@ import {
 import { ModalContainerPropTypes } from './ModalContainer.types';
 
 function ModalContainer(
-    { title, children, direction = 'bottom', absoluteContent }: ModalContainerPropTypes,
+    {
+        title,
+        children,
+        direction = 'bottom',
+        absoluteContent,
+        modalBodyVisible = true,
+    }: ModalContainerPropTypes,
     ref: LegacyRef<HTMLDivElement>
 ): ReactElement {
     const directionContainerStyle = useMemo(() => {
@@ -24,12 +30,14 @@ function ModalContainer(
     return (
         <div sx={CONTAINER}>
             {absoluteContent}
-            <div ref={ref} sx={{ ...MODAL_CONTAINER, ...directionContainerStyle }}>
-                <div sx={MODAL_HEADER_CONTAINER}>
-                    <Text fontSize={5}>{title}</Text>
+            {modalBodyVisible && (
+                <div ref={ref} sx={{ ...MODAL_CONTAINER, ...directionContainerStyle }}>
+                    <div sx={MODAL_HEADER_CONTAINER}>
+                        <Text fontSize={5}>{title}</Text>
+                    </div>
+                    <div sx={{ m: 3 }}>{children}</div>
                 </div>
-                <div sx={{ m: 3 }}>{children}</div>
-            </div>
+            )}
         </div>
     );
 }

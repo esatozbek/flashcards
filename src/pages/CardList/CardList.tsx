@@ -20,14 +20,12 @@ function CardList(): ReactElement {
     const [cards] = useAtom(cardsAtom);
     const [decks] = useAtom(decksAtom);
     const [, addCard] = useAtom(addCardAtom);
-    const [isModalOpen, setModalOpen] = useAtom(isModalOpenAtom);
+    const [, setModalOpen] = useAtom(isModalOpenAtom);
     const [isAddCardModalOpen, setAddCardModalOpen] = useState<boolean>(false);
     const [isPracticeModalOpen, setPracticeModalOpen] = useState<boolean>(false);
     const { deckId } = location.state;
     const deck = decks[deckId || ''];
-    console.log(deck);
-    console.log(cards);
-    console.log(decks);
+
     useEffect(() => {
         if (!deck) {
             history.push('/asd');
@@ -87,7 +85,7 @@ function CardList(): ReactElement {
                 </div>
 
                 <div>
-                    <Button text="Add Card" onClick={onOpenAddCardModal} />
+                    <Button text="Add Card" onClick={onOpenAddCardModal} style={{ mr: 3 }} />
                     <Button text="Practice Deck" onClick={onOpenPracticeModal} />
                 </div>
             </div>
@@ -102,7 +100,11 @@ function CardList(): ReactElement {
                 onCloseModal={onCloseAddCardModal}
                 onAddCard={handleAddCard}
             />
-            <PracticeModal showModal={isPracticeModalOpen} onCloseModal={onClosePracticeModal} />
+            <PracticeModal
+                showModal={isPracticeModalOpen}
+                onCloseModal={onClosePracticeModal}
+                deckId={deckId || ''}
+            />
         </div>
     );
 }

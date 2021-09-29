@@ -7,4 +7,5 @@ export type ModalPropTypes = {
     children: ReactNode;
     direction?: 'right' | 'bottom';
     absoluteContent?: ReactNode;
+    modalBodyVisible?: boolean;
 };
