@@ -33,8 +33,11 @@ function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTyp
         send('NEXT_CARD');
     }, [send]);
 
+    const handlePrevCard = useCallback(() => {
+        send('PREV_CARD');
+    }, [send]);
+
     const handleEndPractice = useCallback(() => {
-        console.log('onCloseModal');
         onCloseModal();
     }, [onCloseModal]);
 
@@ -58,6 +61,7 @@ function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTyp
                         countdown={countdown}
                         currentCard={currentCard}
                         onNextCard={handleNextCard}
+                        onPrevCard={handlePrevCard}
                         timeElapsed={timeElapsed}
                         onEndPractice={handleEndPractice}
                     />

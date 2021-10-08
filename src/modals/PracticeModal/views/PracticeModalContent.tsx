@@ -26,6 +26,7 @@ const StartingContent = ({ countdown }: Partial<PracticeModalContentPropTypes>):
 const StartedContent = ({
     currentCard,
     onNextCard,
+    onPrevCard,
 }: Partial<PracticeModalContentPropTypes>): ReactElement => {
     const cardRef = useRef<TCardRef>(null);
 
@@ -38,7 +39,7 @@ const StartedContent = ({
             <div sx={CONTENT_INNER_CONTAINER_STYLE}>
                 <Card ref={cardRef} card={currentCard} autoTurn={false} />
                 <div sx={CONTENT_INNER_BOTTOM_STYLE}>
-                    <div sx={ARROW_CONTAINER_STYLE}>
+                    <div sx={ARROW_CONTAINER_STYLE} onClick={onPrevCard}>
                         <LeftArrowIcon height={32} width={32} />
                     </div>
                     <div sx={ARROW_CONTAINER_STYLE} onClick={onNextCard}>
@@ -73,8 +74,9 @@ function PracticeModalContent({
     currentState,
     countdown,
     currentCard,
-    onNextCard,
     timeElapsed,
+    onNextCard,
+    onPrevCard,
     onEndPractice,
 }: PracticeModalContentPropTypes): ReactElement {
     return (
@@ -82,7 +84,13 @@ function PracticeModalContent({
             {
                 {
                     starting: <StartingContent countdown={countdown} />,
-                    started: <StartedContent currentCard={currentCard} onNextCard={onNextCard} />,
+                    started: (
+                        <StartedContent
+                            currentCard={currentCard}
+                            onNextCard={onNextCard}
+                            onPrevCard={onPrevCard}
+                        />
+                    ),
                     ended: <EndedContent timeElapsed={timeElapsed} onEndPractice={onEndPractice} />,
                 }[currentState]
             }

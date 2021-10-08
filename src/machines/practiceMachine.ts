@@ -5,6 +5,7 @@ type TEvent =
     | { type: '' }
     | { type: 'START'; cardIds: string[] }
     | { type: 'TICK' }
+    | { type: 'PREV_CARD' }
     | nextCardEvent;
 
 interface IContext {
@@ -85,6 +86,14 @@ const practiceMachine = createMachine<IContext, TEvent>(
                             cond: (context) => context.selectedCardIdx < context.cardIds.length - 1,
                         },
                         { target: 'ended', actions: 'endPractice' },
+                    ],
+                    PREV_CARD: [
+                        {
+                            actions: assign({
+                                selectedCardIdx: (context, event) => context.selectedCardIdx - 1,
+                            }),
+                            cond: (context) => context.selectedCardIdx > 0,
+                        },
                     ],
                     TICK: {
                         actions: assign({
