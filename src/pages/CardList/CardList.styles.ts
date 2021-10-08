@@ -17,3 +17,17 @@ export const CARD_CONTAINER_STYLE = {
     columnGap: 4,
     mt: 3,
 };
+
+export const TITLE_CONTAINER_STYLE = {
+    width: '55%',
+    borderBottom: '6px solid black',
+    py: 3,
+    px: 3,
+    mr: 64,
+    ml: 3,
+    flex: 1,
+};
+
+export const ICON_BUTTON_CONTAINER_STYLE = {
+    cursor: 'pointer',
+};

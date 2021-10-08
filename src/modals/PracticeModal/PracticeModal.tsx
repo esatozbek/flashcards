@@ -14,6 +14,15 @@ import { useAtom } from 'jotai';
 import { decksAtom } from 'atoms/deckAtoms';
 import { cardsAtom } from 'atoms/cardAtoms';
 import formatSeconds from 'utils/formatSeconds';
+import {
+    HEADER_CONTAINER_STYLE,
+    MODAL_ROW_STYLE,
+    CONTENT_CONTAINER_STYLE,
+    CONTENT_BOTTOM_STYLE,
+    ARROW_CONTAINER_STYLE,
+    CONTENT_INNER_BOTTOM_STYLE,
+    CONTENT_INNER_CONTAINER_STYLE,
+} from './PracticeModal.styles';
 
 function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTypes): ReactElement {
     const [current, send] = useMachine(practiceMachine);
@@ -50,19 +59,7 @@ function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTyp
             direction="right"
             absoluteContent={
                 <Fragment>
-                    <div
-                        sx={{
-                            position: 'absolute',
-                            top: 0,
-                            width: '100%',
-                            p: 3,
-                            backgroundColor: 'primary',
-                            boxShadow: '4px 4px 2px 0px rgb(0 0 0 / 50%)',
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                        }}
-                    >
+                    <div sx={HEADER_CONTAINER_STYLE}>
                         <Text fontSize={5}>CS Deck</Text>
                         {current.value === 'started' && (
                             <div>
@@ -78,26 +75,9 @@ function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTyp
                         )}
                     </div>
 
-                    <div
-                        sx={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                        }}
-                    >
+                    <div sx={CONTENT_CONTAINER_STYLE}>
                         <React.Fragment>
-                            <div
-                                sx={{
-                                    display: 'relative',
-                                    backgroundColor: 'secondary',
-                                    boxShadow: '4px 4px 2px 0px rgb(0 0 0 / 50%)',
-                                    p: 3,
-                                }}
-                            >
+                            <div sx={CONTENT_INNER_CONTAINER_STYLE}>
                                 {current.value === 'starting' && (
                                     <Text fontSize={5}>{countdown}</Text>
                                 )}
@@ -105,18 +85,12 @@ function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTyp
                                 {current.value === 'started' && (
                                     <React.Fragment>
                                         <Card card={currentCard} />
-                                        <div
-                                            sx={{
-                                                mt: 3,
-                                                display: 'flex',
-                                                justifyContent: 'space-between',
-                                            }}
-                                        >
-                                            <div sx={{ cursor: 'pointer' }}>
+                                        <div sx={CONTENT_INNER_BOTTOM_STYLE}>
+                                            <div sx={ARROW_CONTAINER_STYLE}>
                                                 <LeftArrowIcon height={32} width={32} />
                                             </div>
                                             <div
-                                                sx={{ cursor: 'pointer' }}
+                                                sx={ARROW_CONTAINER_STYLE}
                                                 onClick={handleNextCard}
                                             >
                                                 <RightArrowIcon height={32} width={32} />
@@ -131,12 +105,7 @@ function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTyp
                                 )}
                             </div>
 
-                            <div
-                                sx={{
-                                    position: 'absolute',
-                                    bottom: '-86px',
-                                }}
-                            >
+                            <div sx={CONTENT_BOTTOM_STYLE}>
                                 {current.value === 'started' && <Button text="Show Back" />}
                                 {current.value === 'ended' && <Button text="End Practice" />}
                             </div>
@@ -147,9 +116,7 @@ function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTyp
             modalBodyVisible={!started}
         >
             <div>
-                <div
-                    sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-                >
+                <div sx={MODAL_ROW_STYLE}>
                     <Text fontSize={3} fontFamily="heading">
                         Card Number
                     </Text>
@@ -157,9 +124,7 @@ function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTyp
                 </div>
                 <div
                     sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
+                        ...MODAL_ROW_STYLE,
                         my: 3,
                     }}
                 >

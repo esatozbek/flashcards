@@ -12,7 +12,13 @@ import { decksAtom } from 'atoms/deckAtoms';
 import { isModalOpenAtom } from 'atoms/modalAtoms';
 import { TLocationState } from 'types/location.types';
 import { LeftArrowIcon } from 'assets/svg';
-import { CONTAINER_STYLE, HEADER_CONTAINER_STYLE, CARD_CONTAINER_STYLE } from './CardList.styles';
+import {
+    CONTAINER_STYLE,
+    HEADER_CONTAINER_STYLE,
+    CARD_CONTAINER_STYLE,
+    TITLE_CONTAINER_STYLE,
+    ICON_BUTTON_CONTAINER_STYLE,
+} from './CardList.styles';
 
 function CardList(): ReactElement {
     const location = useLocation<TLocationState>();
@@ -67,20 +73,10 @@ function CardList(): ReactElement {
     return (
         <div sx={CONTAINER_STYLE}>
             <div sx={HEADER_CONTAINER_STYLE}>
-                <div sx={{ cursor: 'pointer' }} onClick={onGoBack}>
+                <div sx={ICON_BUTTON_CONTAINER_STYLE} onClick={onGoBack}>
                     <LeftArrowIcon height={32} width={32} />
                 </div>
-                <div
-                    sx={{
-                        width: '55%',
-                        borderBottom: '6px solid black',
-                        py: 3,
-                        px: 3,
-                        mr: 64,
-                        ml: 3,
-                        flex: 1,
-                    }}
-                >
+                <div sx={TITLE_CONTAINER_STYLE}>
                     <Text fontSize={5}>{deck?.deckName}</Text>
                 </div>
 

@@ -4,6 +4,7 @@ import Modal from 'components/Modal';
 import Input from 'components/Input';
 import Button from 'components/Button';
 import { CreateDeckModalPropTypes } from './CreateDeckModal.types';
+import { INPUT_CONTAINER_STYLE, FOOTER_CONTAINER_STYLE } from './CreateDeckModal.styles';
 
 function CreateDeckModal({
     isDeckModalOpen,
@@ -23,7 +24,7 @@ function CreateDeckModal({
 
     return (
         <Modal title="Create New Deck" showModal={isDeckModalOpen} onCloseModal={onCloseModal}>
-            <div sx={{ mb: 8 }}>
+            <div sx={INPUT_CONTAINER_STYLE}>
                 <Input
                     placeholder="Name of new deck"
                     value={newDeckName}
@@ -31,7 +32,7 @@ function CreateDeckModal({
                 />
             </div>
 
-            <div sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <div sx={FOOTER_CONTAINER_STYLE}>
                 <Button onClick={handleCreateDeck} text="Create Deck" />
             </div>
         </Modal>

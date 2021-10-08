@@ -5,6 +5,12 @@ import Card from 'components/Card';
 import Button from 'components/Button';
 import { Text } from 'components/Typography';
 import { AddCardModalPropTypes } from './AddCardModal.types';
+import {
+    CONTAINER_STYLE,
+    FRONT_CONTENT_TEXT_CONTAINER_STYLE,
+    BACK_CONTENT_CONTAINER_STYLE,
+    BACK_CONTENT_TEXT_CONTAINER_STYLE,
+} from './AddCardModal.styles';
 
 function AddCardModal({ isModalOpen, onCloseModal, onAddCard }: AddCardModalPropTypes) {
     const [frontContent, setFrontContent] = useState<string>('');
@@ -36,14 +42,7 @@ function AddCardModal({ isModalOpen, onCloseModal, onAddCard }: AddCardModalProp
             onCloseModal={onCloseModal}
             direction="right"
             absoluteContent={
-                <div
-                    sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '10%',
-                        transform: 'translateY(-50%)',
-                    }}
-                >
+                <div sx={CONTAINER_STYLE}>
                     <Card
                         card={{
                             uuid: '',
@@ -57,7 +56,7 @@ function AddCardModal({ isModalOpen, onCloseModal, onAddCard }: AddCardModalProp
             }
         >
             <div>
-                <div sx={{ my: 3 }}>
+                <div sx={FRONT_CONTENT_TEXT_CONTAINER_STYLE}>
                     <Text fontFamily="heading" fontSize={3}>
                         Front content
                     </Text>
@@ -71,8 +70,8 @@ function AddCardModal({ isModalOpen, onCloseModal, onAddCard }: AddCardModalProp
                 />
             </div>
 
-            <div sx={{ mb: 2 }}>
-                <div sx={{ my: 3 }}>
+            <div sx={BACK_CONTENT_CONTAINER_STYLE}>
+                <div sx={BACK_CONTENT_TEXT_CONTAINER_STYLE}>
                     <Text fontFamily="heading" fontSize={3}>
                         Back content
                     </Text>
