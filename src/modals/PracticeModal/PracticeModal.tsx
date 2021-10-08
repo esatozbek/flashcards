@@ -33,6 +33,11 @@ function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTyp
         send('NEXT_CARD');
     }, [send]);
 
+    const handleEndPractice = useCallback(() => {
+        console.log('onCloseModal');
+        onCloseModal();
+    }, [onCloseModal]);
+
     return (
         <Modal
             title="Practice"
@@ -52,8 +57,9 @@ function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTyp
                         currentState={current.value.toString()}
                         countdown={countdown}
                         currentCard={currentCard}
-                        handleNextCard={handleNextCard}
+                        onNextCard={handleNextCard}
                         timeElapsed={timeElapsed}
+                        onEndPractice={handleEndPractice}
                     />
                 </Fragment>
             }

@@ -21,6 +21,7 @@ export type PracticeModalContentPropTypes = {
     currentState: string;
     countdown: number;
     currentCard: TCard;
-    handleNextCard: () => void;
+    onNextCard: () => void;
     timeElapsed: number;
+    onEndPractice: () => void;
 };

@@ -58,7 +58,7 @@ const practiceMachine = createMachine<IContext, TEvent>(
                             actions: assign({
                                 countdown: (context: IContext, event) => context.countdown - 1,
                             }),
-                            cond: (context: any) => context.countdown > 0,
+                            cond: (context: any) => context.countdown > 1,
                         } as any,
                         { target: 'started' },
                     ],

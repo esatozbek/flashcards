@@ -1,7 +1,15 @@
 /** @jsxImportSource theme-ui */
-import { ReactElement, useState, useCallback } from 'react';
+import {
+    ReactElement,
+    useState,
+    useCallback,
+    useEffect,
+    useImperativeHandle,
+    forwardRef,
+    Ref,
+} from 'react';
 import { Text } from 'components/Typography';
-import { CardPropTypes } from './Card.types';
+import { CardPropTypes, TCardRef } from './Card.types';
 import {
     CONTAINER_STYLE,
     FRONT_CONTAINER,
@@ -11,16 +19,33 @@ import {
     ROTATE_CARD_STYLE,
 } from './Card.styles';
 
-function Card({ card }: CardPropTypes): ReactElement {
+function Card(
+    { card, autoTurn = true }: CardPropTypes,
+    ref: Ref<TCardRef> | undefined
+): ReactElement {
     const [isHover, setHover] = useState<boolean>(false);
 
+    useEffect(() => {
+        setHover(false);
+    }, [card, setHover]);
+
     const onMouseEnter = useCallback(() => {
-        setHover(true);
-    }, [setHover]);
+        if (autoTurn) {
+            setHover(true);
+        }
+    }, [setHover, autoTurn]);
 
     const onMouseLeave = useCallback(() => {
-        setHover(false);
-    }, [setHover]);
+        if (autoTurn) {
+            setHover(false);
+        }
+    }, [setHover, autoTurn]);
+
+    useImperativeHandle(ref, () => ({
+        turnCard() {
+            setHover((prevIsHover) => !prevIsHover);
+        },
+    }));
 
     return (
         <div sx={CONTAINER_STYLE} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
@@ -43,4 +68,4 @@ function Card({ card }: CardPropTypes): ReactElement {
     );
 }
 
-export default Card;
+export default forwardRef(Card);
