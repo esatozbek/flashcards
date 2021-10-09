@@ -1,12 +1,11 @@
 import { createMachine, assign } from 'xstate';
 
-type nextCardEvent = { type: 'NEXT_CARD' };
 type TEvent =
     | { type: '' }
     | { type: 'START'; cardIds: string[] }
     | { type: 'TICK' }
     | { type: 'PREV_CARD' }
-    | nextCardEvent;
+    | { type: 'NEXT_CARD' };
 
 interface IContext {
     startTime: number;

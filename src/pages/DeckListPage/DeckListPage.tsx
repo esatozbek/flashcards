@@ -2,15 +2,16 @@
 import { ReactElement, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAtom } from 'jotai';
+import DefaultLayout from 'layouts/DefaultLayout';
 import Deck from 'components/Deck';
 import Button from 'components/Button';
 import CreateDeckModal from 'modals/CreateDeckModal';
 import { isModalOpenAtom } from 'atoms/modalAtoms';
 import { decksAtom, addDeckAtom } from 'atoms/deckAtoms';
-import { CONTAINER_STYLE, TOP_CONTAINER_STYLE, DECK_CONTAINER_STYLE } from './DeckList.style';
+import { CONTAINER_STYLE, TOP_CONTAINER_STYLE, DECK_CONTAINER_STYLE } from './DeckListPage.style';
 import { TDeck } from 'types/deck.types';
 
-function DeckList(): ReactElement {
+function DeckListPage(): ReactElement {
     const history = useHistory();
     const [isModalOpen, setModalOpen] = useAtom(isModalOpenAtom);
     const [decks] = useAtom(decksAtom);
@@ -40,22 +41,24 @@ function DeckList(): ReactElement {
     );
 
     return (
-        <div sx={CONTAINER_STYLE}>
-            <CreateDeckModal
-                onCreateDeck={handleCreateDeck}
-                isDeckModalOpen={isModalOpen}
-                onCloseModal={handleCloseModal}
-            />
-            <div sx={TOP_CONTAINER_STYLE}>
-                <Button onClick={handleOpenModal} text="New Deck" />
+        <DefaultLayout>
+            <div sx={CONTAINER_STYLE}>
+                <CreateDeckModal
+                    onCreateDeck={handleCreateDeck}
+                    isDeckModalOpen={isModalOpen}
+                    onCloseModal={handleCloseModal}
+                />
+                <div sx={TOP_CONTAINER_STYLE}>
+                    <Button onClick={handleOpenModal} text="New Deck" />
+                </div>
+                <div sx={DECK_CONTAINER_STYLE}>
+                    {Object.values(decks).map((deck) => (
+                        <Deck key={deck.deckId} deck={deck} onDeckClick={handleDeckClick} />
+                    ))}
+                </div>
             </div>
-            <div sx={DECK_CONTAINER_STYLE}>
-                {Object.values(decks).map((deck) => (
-                    <Deck key={deck.deckId} deck={deck} onDeckClick={handleDeckClick} />
-                ))}
-            </div>
-        </div>
+        </DefaultLayout>
     );
 }
 
-export default DeckList;
+export default DeckListPage;

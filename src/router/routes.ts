@@ -1,16 +1,26 @@
+import { ReactElement } from 'react';
 import { RouteProps } from 'react-router-dom';
-import DeckList from 'pages/DeckList';
-import CardList from 'pages/CardList';
+import DeckListPage from 'pages/DeckListPage';
+import CardListPage from 'pages/CardListPage';
+import StatisticsPage from 'pages/StatisticsPage';
 
-const routes: RouteProps[] = [
+type TRoutes = {
+    page: () => ReactElement;
+} & RouteProps;
+
+const routes: TRoutes[] = [
     {
         path: '/',
-        component: DeckList,
+        page: DeckListPage,
         exact: true,
     },
     {
         path: '/deck',
-        component: CardList,
+        page: CardListPage,
+    },
+    {
+        path: '/statistics',
+        page: StatisticsPage,
     },
 ];
 

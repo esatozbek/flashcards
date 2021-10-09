@@ -2,6 +2,7 @@
 import { ReactElement, useState, useCallback, useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useAtom } from 'jotai';
+import DefaultLayout from 'layouts/DefaultLayout';
 import { Text } from 'components/Typography';
 import Button from 'components/Button';
 import Card from 'components/Card';
@@ -18,9 +19,9 @@ import {
     CARD_CONTAINER_STYLE,
     TITLE_CONTAINER_STYLE,
     ICON_BUTTON_CONTAINER_STYLE,
-} from './CardList.styles';
+} from './CardListPage.styles';
 
-function CardList(): ReactElement {
+function CardListPage(): ReactElement {
     const location = useLocation<TLocationState>();
     const history = useHistory();
     const [cards] = useAtom(cardsAtom);
@@ -29,12 +30,12 @@ function CardList(): ReactElement {
     const [, setModalOpen] = useAtom(isModalOpenAtom);
     const [isAddCardModalOpen, setAddCardModalOpen] = useState<boolean>(false);
     const [isPracticeModalOpen, setPracticeModalOpen] = useState<boolean>(false);
-    const { deckId } = location.state;
+    const { deckId } = location.state || {};
     const deck = decks[deckId || ''];
 
     useEffect(() => {
         if (!deck) {
-            history.push('/asd');
+            history.push('/');
         }
     }, [deck, history]);
 
@@ -71,38 +72,40 @@ function CardList(): ReactElement {
     );
 
     return (
-        <div sx={CONTAINER_STYLE}>
-            <div sx={HEADER_CONTAINER_STYLE}>
-                <div sx={ICON_BUTTON_CONTAINER_STYLE} onClick={onGoBack}>
-                    <LeftArrowIcon height={32} width={32} />
-                </div>
-                <div sx={TITLE_CONTAINER_STYLE}>
-                    <Text fontSize={5}>{deck?.deckName}</Text>
+        <DefaultLayout>
+            <div sx={CONTAINER_STYLE}>
+                <div sx={HEADER_CONTAINER_STYLE}>
+                    <div sx={ICON_BUTTON_CONTAINER_STYLE} onClick={onGoBack}>
+                        <LeftArrowIcon height={32} width={32} />
+                    </div>
+                    <div sx={TITLE_CONTAINER_STYLE}>
+                        <Text fontSize={5}>{deck?.deckName}</Text>
+                    </div>
+
+                    <div>
+                        <Button text="Add Card" onClick={onOpenAddCardModal} style={{ mr: 3 }} />
+                        <Button text="Practice Deck" onClick={onOpenPracticeModal} />
+                    </div>
                 </div>
 
-                <div>
-                    <Button text="Add Card" onClick={onOpenAddCardModal} style={{ mr: 3 }} />
-                    <Button text="Practice Deck" onClick={onOpenPracticeModal} />
+                <div sx={CARD_CONTAINER_STYLE}>
+                    {deck?.cardIds.map((card) => (
+                        <Card key={card} card={cards[card]} />
+                    ))}
                 </div>
+                <AddCardModal
+                    isModalOpen={isAddCardModalOpen}
+                    onCloseModal={onCloseAddCardModal}
+                    onAddCard={handleAddCard}
+                />
+                <PracticeModal
+                    showModal={isPracticeModalOpen}
+                    onCloseModal={onClosePracticeModal}
+                    deckId={deckId || ''}
+                />
             </div>
-
-            <div sx={CARD_CONTAINER_STYLE}>
-                {deck?.cardIds.map((card) => (
-                    <Card key={card} card={cards[card]} />
-                ))}
-            </div>
-            <AddCardModal
-                isModalOpen={isAddCardModalOpen}
-                onCloseModal={onCloseAddCardModal}
-                onAddCard={handleAddCard}
-            />
-            <PracticeModal
-                showModal={isPracticeModalOpen}
-                onCloseModal={onClosePracticeModal}
-                deckId={deckId || ''}
-            />
-        </div>
+        </DefaultLayout>
     );
 }
 
-export default CardList;
+export default CardListPage;

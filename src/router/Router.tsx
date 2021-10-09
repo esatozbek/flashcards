@@ -6,8 +6,10 @@ function Router(): ReactElement {
     return (
         <BrowserRouter>
             <Switch>
-                {routes.map((route) => (
-                    <Route {...route} />
+                {routes.map(({ page: Page, ...route }) => (
+                    <Route {...route}>
+                        <Page />
+                    </Route>
                 ))}
             </Switch>
         </BrowserRouter>

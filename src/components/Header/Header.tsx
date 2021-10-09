@@ -6,8 +6,8 @@ import { HEADER_CONTAINER_STYLE } from './Header.styles';
 function Header(): ReactElement {
     return (
         <div sx={HEADER_CONTAINER_STYLE}>
-            <HeaderLink>Decks</HeaderLink>
-            <HeaderLink>Stats</HeaderLink>
+            <HeaderLink target="/">Decks</HeaderLink>
+            <HeaderLink target="/statistics">Stats</HeaderLink>
         </div>
     );
 }
