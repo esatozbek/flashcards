@@ -1,45 +1,61 @@
 /** @jsxImportSource theme-ui */
-import { Fragment, ReactElement, useState, useCallback } from 'react';
-import Modal from 'components/Modal';
-import { PracticeModalPropTypes } from './PracticeModal.types';
-import { useMachine } from '@xstate/react';
-import practiceMachine from 'machines/practiceMachine';
+import { Fragment, ReactElement, useState, useCallback, useEffect } from 'react';
 import { useAtom } from 'jotai';
+import { useInterpret, useSelector } from '@xstate/react';
+import Modal from 'components/Modal';
+import practiceMachine from 'machines/practiceMachine';
+import { setServiceAtom } from 'atoms/serviceAtoms';
 import { decksAtom } from 'atoms/deckAtoms';
-import { cardsAtom } from 'atoms/cardAtoms';
+import { appendPracticeStatisticsAtom } from 'atoms/statisticAtoms';
 import PracticeForm from './views/PracticeForm';
 import PracticeModalContent from './views/PracticeModalContent';
 import PracticeModalHeader from './views/PracticeModalHeader';
+import { PracticeModalPropTypes } from './PracticeModal.types';
 
 function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTypes): ReactElement {
-    const [current, send] = useMachine(practiceMachine);
+    console.log(`Render PracticeModal`);
+    const practiceService = useInterpret(practiceMachine);
     const [started, setStarted] = useState<boolean>(false);
     const [decks] = useAtom(decksAtom);
-    const [cards] = useAtom(cardsAtom);
-    const { cardIds, selectedCardIdx, countdown, timeElapsed } = current.context;
-    const currentCard = cards[cardIds[selectedCardIdx]];
+    const [, appendPracticeStatistics] = useAtom(appendPracticeStatisticsAtom);
+    const [, setService] = useAtom(setServiceAtom);
 
-    console.log(current);
+    const cardIds = useSelector(practiceService, (state) => state.context.cardIds);
+    const turnBackCardIds = useSelector(practiceService, (state) => state.context.turnBackCardIds);
+    const value = useSelector(practiceService, (state) => state.value);
+
+    useEffect(() => {
+        setService({ serviceKey: 'practiceService', service: practiceService });
+    }, [practiceService, setService]);
 
     const handleStartPractice = useCallback(
         (isShuffle: boolean, cardNumber: number) => {
             setStarted(true);
-            send('START', { cardIds: decks[deckId].cardIds });
+            practiceService.send('START', { cardIds: decks[deckId].cardIds });
         },
-        [setStarted, send, decks, deckId]
+        [setStarted, practiceService, decks, deckId]
     );
 
     const handleNextCard = useCallback(() => {
-        send('NEXT_CARD');
-    }, [send]);
+        practiceService.send('NEXT_CARD');
+    }, [practiceService]);
 
     const handlePrevCard = useCallback(() => {
-        send('PREV_CARD');
-    }, [send]);
+        practiceService.send('PREV_CARD');
+    }, [practiceService]);
 
-    const handleEndPractice = useCallback(() => {
-        onCloseModal();
-    }, [onCloseModal]);
+    const handleEndPractice = useCallback(
+        (timeElapsed: number) => {
+            appendPracticeStatistics({
+                timeSpent: timeElapsed,
+                practicedCardCount: cardIds.length,
+                deckId,
+                turnBackCount: turnBackCardIds.size,
+            });
+            onCloseModal();
+        },
+        [onCloseModal, appendPracticeStatistics, cardIds, deckId, turnBackCardIds]
+    );
 
     return (
         <Modal
@@ -49,20 +65,12 @@ function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTyp
             direction="right"
             absoluteContent={
                 <Fragment>
-                    <PracticeModalHeader
-                        currentState={String(current.value)}
-                        selectedCardIdx={selectedCardIdx}
-                        cardIdslength={cardIds.length}
-                        timeElapsed={timeElapsed}
-                    />
+                    <PracticeModalHeader />
 
                     <PracticeModalContent
-                        currentState={current.value.toString()}
-                        countdown={countdown}
-                        currentCard={currentCard}
+                        currentState={value.toString()}
                         onNextCard={handleNextCard}
                         onPrevCard={handlePrevCard}
-                        timeElapsed={timeElapsed}
                         onEndPractice={handleEndPractice}
                     />
                 </Fragment>
