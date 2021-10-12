@@ -6,7 +6,7 @@ type TEvent =
     | { type: 'TICK' }
     | { type: 'PREV_CARD' }
     | { type: 'NEXT_CARD' }
-    | { type: 'TURN_BACK'; cardId: string };
+    | { type: 'TURN_BACK'; cardIdx: string };
 
 interface IContext {
     startTime: number;
@@ -15,7 +15,7 @@ interface IContext {
     selectedCardIdx: number;
     countdown: number;
     timeElapsed: number;
-    turnBackCardIds: Set<string>;
+    turnBackCardIdxs: Set<string>;
 }
 
 const practiceMachine = createMachine<IContext, TEvent>(
@@ -29,7 +29,7 @@ const practiceMachine = createMachine<IContext, TEvent>(
             cardIds: [],
             selectedCardIdx: 0,
             timeElapsed: 0,
-            turnBackCardIds: new Set<string>(),
+            turnBackCardIdxs: new Set<string>(),
         },
         states: {
             idle: {
@@ -100,8 +100,8 @@ const practiceMachine = createMachine<IContext, TEvent>(
                     TURN_BACK: [
                         {
                             actions: assign({
-                                turnBackCardIds: (context, event) =>
-                                    context.turnBackCardIds.add(event.cardId),
+                                turnBackCardIdxs: (context, event) =>
+                                    context.turnBackCardIdxs.add(event.cardIdx),
                             }),
                         },
                     ],
@@ -110,11 +110,6 @@ const practiceMachine = createMachine<IContext, TEvent>(
                             timeElapsed: (context, event) => context.timeElapsed + 1,
                         }),
                     },
-                },
-            },
-            increasingCard: {
-                on: {
-                    '': { target: 'started' },
                 },
             },
             ended: {

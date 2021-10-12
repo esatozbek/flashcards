@@ -13,7 +13,6 @@ import PracticeModalHeader from './views/PracticeModalHeader';
 import { PracticeModalPropTypes } from './PracticeModal.types';
 
 function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTypes): ReactElement {
-    console.log(`Render PracticeModal`);
     const practiceService = useInterpret(practiceMachine);
     const [started, setStarted] = useState<boolean>(false);
     const [decks] = useAtom(decksAtom);
@@ -21,7 +20,10 @@ function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTyp
     const [, setService] = useAtom(setServiceAtom);
 
     const cardIds = useSelector(practiceService, (state) => state.context.cardIds);
-    const turnBackCardIds = useSelector(practiceService, (state) => state.context.turnBackCardIds);
+    const turnBackCardIdxs = useSelector(
+        practiceService,
+        (state) => state.context.turnBackCardIdxs
+    );
     const value = useSelector(practiceService, (state) => state.value);
 
     useEffect(() => {
@@ -50,11 +52,11 @@ function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTyp
                 timeSpent: timeElapsed,
                 practicedCardCount: cardIds.length,
                 deckId,
-                turnBackCount: turnBackCardIds.size,
+                turnBackCount: turnBackCardIdxs.size,
             });
             onCloseModal();
         },
-        [onCloseModal, appendPracticeStatistics, cardIds, deckId, turnBackCardIds]
+        [onCloseModal, appendPracticeStatistics, cardIds, deckId, turnBackCardIdxs]
     );
 
     return (

@@ -7,7 +7,7 @@ function Router(): ReactElement {
         <BrowserRouter>
             <Switch>
                 {routes.map(({ page: Page, ...route }) => (
-                    <Route {...route}>
+                    <Route key={Page.name} {...route}>
                         <Page />
                     </Route>
                 ))}

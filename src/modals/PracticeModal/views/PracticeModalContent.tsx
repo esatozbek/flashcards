@@ -44,8 +44,9 @@ const StartedContent = ({
     const currentCard = cards[cardIds[selectedCardIdx]];
 
     const handleTurnCard = useCallback(() => {
+        practiceService.send('TURN_BACK', { cardIdx: selectedCardIdx });
         cardRef.current?.turnCard?.();
-    }, [cardRef]);
+    }, [cardRef, practiceService, selectedCardIdx]);
 
     return (
         <Fragment>
