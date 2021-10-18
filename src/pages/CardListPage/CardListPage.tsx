@@ -2,6 +2,7 @@
 import { ReactElement, useState, useCallback, useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useAtom } from 'jotai';
+import { Grid, Box, Flex } from 'theme-ui';
 import DefaultLayout from 'layouts/DefaultLayout';
 import { Text } from 'components/Typography';
 import Button from 'components/Button';
@@ -14,9 +15,7 @@ import { isModalOpenAtom } from 'atoms/modalAtoms';
 import { TLocationState } from 'types/location.types';
 import { LeftArrowIcon } from 'assets/svg';
 import {
-    CONTAINER_STYLE,
     HEADER_CONTAINER_STYLE,
-    CARD_CONTAINER_STYLE,
     TITLE_CONTAINER_STYLE,
     ICON_BUTTON_CONTAINER_STYLE,
 } from './CardListPage.styles';
@@ -73,26 +72,28 @@ function CardListPage(): ReactElement {
 
     return (
         <DefaultLayout>
-            <div sx={CONTAINER_STYLE}>
-                <div sx={HEADER_CONTAINER_STYLE}>
-                    <div sx={ICON_BUTTON_CONTAINER_STYLE} onClick={onGoBack}>
-                        <LeftArrowIcon height={32} width={32} />
-                    </div>
-                    <div sx={TITLE_CONTAINER_STYLE}>
-                        <Text fontSize={5}>{deck?.deckName}</Text>
-                    </div>
+            <Box my={4} mx={[1, 4, 7]}>
+                <Flex sx={HEADER_CONTAINER_STYLE} m={3}>
+                    <Flex sx={{ flex: 1, marginBottom: [3, null, null], alignItems: 'center' }}>
+                        <Box sx={ICON_BUTTON_CONTAINER_STYLE} onClick={onGoBack}>
+                            <LeftArrowIcon height={32} width={32} />
+                        </Box>
+                        <Box sx={TITLE_CONTAINER_STYLE} p={3} mr={64} ml={3}>
+                            <Text fontSize={5}>{deck?.deckName}</Text>
+                        </Box>
+                    </Flex>
 
-                    <div>
+                    <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
                         <Button text="Add Card" onClick={onOpenAddCardModal} style={{ mr: 3 }} />
                         <Button text="Practice Deck" onClick={onOpenPracticeModal} />
-                    </div>
-                </div>
+                    </Flex>
+                </Flex>
 
-                <div sx={CARD_CONTAINER_STYLE}>
+                <Grid variant="deckGrid">
                     {deck?.cardIds.map((card) => (
                         <Card key={card} card={cards[card]} />
                     ))}
-                </div>
+                </Grid>
                 <AddCardModal
                     isModalOpen={isAddCardModalOpen}
                     onCloseModal={onCloseAddCardModal}
@@ -103,7 +104,7 @@ function CardListPage(): ReactElement {
                     onCloseModal={onClosePracticeModal}
                     deckId={deckId || ''}
                 />
-            </div>
+            </Box>
         </DefaultLayout>
     );
 }

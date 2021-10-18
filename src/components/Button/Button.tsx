@@ -1,14 +1,18 @@
 /** @jsxImportSource theme-ui */
 import { ReactElement } from 'react';
-import { ButtonPropTypes } from './Button.types';
-import { BUTTON_STYLE } from './Button.styles';
+import { Button as ThemeButton } from 'theme-ui';
 import { Text } from 'components/Typography';
+import { ButtonPropTypes } from './Button.types';
 
-function Button({ text, onClick, style }: ButtonPropTypes): ReactElement {
+function Button({ text, onClick, style, variant = 'primary' }: ButtonPropTypes): ReactElement {
     return (
-        <button sx={{ ...BUTTON_STYLE, ...style }} onClick={onClick}>
+        <ThemeButton
+            onClick={onClick}
+            sx={{ color: 'black', borderRadius: 0, ...style }}
+            variant={variant}
+        >
             <Text fontSize={3}>{text}</Text>
-        </button>
+        </ThemeButton>
     );
 }
 

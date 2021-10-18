@@ -2,13 +2,14 @@
 import { ReactElement, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAtom } from 'jotai';
+import { Box, Flex, Grid } from 'theme-ui';
 import DefaultLayout from 'layouts/DefaultLayout';
 import Deck from 'components/Deck';
 import Button from 'components/Button';
 import CreateDeckModal from 'modals/CreateDeckModal';
 import { isModalOpenAtom } from 'atoms/modalAtoms';
 import { decksAtom, addDeckAtom } from 'atoms/deckAtoms';
-import { CONTAINER_STYLE, TOP_CONTAINER_STYLE, DECK_CONTAINER_STYLE } from './DeckListPage.style';
+import { TOP_CONTAINER_STYLE } from './DeckListPage.style';
 import { TDeck } from 'types/deck.types';
 
 function DeckListPage(): ReactElement {
@@ -42,21 +43,21 @@ function DeckListPage(): ReactElement {
 
     return (
         <DefaultLayout>
-            <div sx={CONTAINER_STYLE}>
+            <Box mx={7} mt={5}>
                 <CreateDeckModal
                     onCreateDeck={handleCreateDeck}
                     isDeckModalOpen={isModalOpen}
                     onCloseModal={handleCloseModal}
                 />
-                <div sx={TOP_CONTAINER_STYLE}>
+                <Flex sx={TOP_CONTAINER_STYLE}>
                     <Button onClick={handleOpenModal} text="New Deck" />
-                </div>
-                <div sx={DECK_CONTAINER_STYLE}>
+                </Flex>
+                <Grid variant="deckGrid">
                     {Object.values(decks).map((deck) => (
                         <Deck key={deck.deckId} deck={deck} onDeckClick={handleDeckClick} />
                     ))}
-                </div>
-            </div>
+                </Grid>
+            </Box>
         </DefaultLayout>
     );
 }

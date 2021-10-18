@@ -67,7 +67,7 @@ function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTyp
             direction="right"
             absoluteContent={
                 <Fragment>
-                    <PracticeModalHeader />
+                    <PracticeModalHeader deckName={decks[deckId].deckName} />
 
                     <PracticeModalContent
                         currentState={value.toString()}

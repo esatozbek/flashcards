@@ -1,13 +1,13 @@
 /** @jsxImportSource theme-ui */
 import { ReactElement } from 'react';
-import { Text } from 'components/Typography';
-import { HEADER_CONTAINER_STYLE } from '../PracticeModal.styles';
-import formatSeconds from 'utils/formatSeconds';
 import { useSelector } from '@xstate/react';
-import { serviceAtom } from 'atoms/serviceAtoms';
 import { useAtom } from 'jotai';
+import { Text } from 'components/Typography';
+import formatSeconds from 'utils/formatSeconds';
+import { serviceAtom } from 'atoms/serviceAtoms';
+import { HEADER_CONTAINER_STYLE } from '../PracticeModal.styles';
 
-function PracticeModalHeader(): ReactElement {
+function PracticeModalHeader({ deckName }: { deckName: string }): ReactElement {
     const [{ practiceService }] = useAtom(serviceAtom);
     const cardIdslength = useSelector(practiceService, (state) => state.context.cardIds.length);
     const selectedCardIdx = useSelector(practiceService, (state) => state.context.selectedCardIdx);
@@ -16,7 +16,7 @@ function PracticeModalHeader(): ReactElement {
 
     return (
         <div sx={HEADER_CONTAINER_STYLE}>
-            <Text fontSize={5}>CS Deck</Text>
+            <Text fontSize={5}>{deckName}</Text>
             {isStarted && (
                 <div>
                     <div>

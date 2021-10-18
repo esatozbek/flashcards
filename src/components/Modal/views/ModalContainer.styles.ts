@@ -12,7 +12,7 @@ const fadeInRight = keyframes({
 });
 
 export const CONTAINER = {
-    position: 'absolute' as StylePropertyValue<any>,
+    position: 'fixed' as StylePropertyValue<any>,
     top: 0,
     left: 0,
     height: '100vh',
@@ -21,7 +21,7 @@ export const CONTAINER = {
 
 export const MODAL_CONTAINER = {
     position: 'absolute' as StylePropertyValue<any>,
-    width: '50vw',
+    width: ['100vw', '75vw', '50vw'],
     bg: 'primary',
     zIndex: '1000',
     boxShadow: '12px 12px 4px 0px rgb(0 0 0 / 50%)',
@@ -39,6 +39,12 @@ export const MODAL_CONTAINER_RIGHT = {
     right: '0',
     transform: 'translateY(-50%)',
     animation: `.5s ${fadeInRight}`,
+    width: ['100vw', '100vw', '50vw'],
+    '@media screen and (max-width: 1000px)': {
+        bottom: 0,
+        top: 'unset',
+        transform: 'unset',
+    },
 };
 
 export const MODAL_HEADER_CONTAINER = {

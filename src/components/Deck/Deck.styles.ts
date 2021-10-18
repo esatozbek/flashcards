@@ -1,12 +1,10 @@
 /** @jsxImportSource theme-ui */
-import { DECK_HEIGHT, DECK_WIDTH } from './Deck.constants';
+import { DECK_HEIGHT } from './Deck.constants';
 import { StylePropertyValue } from 'theme-ui';
 
 export const WRAPPER_STYLE = {
+    variant: 'styles.boxes.deck',
     position: 'relative' as StylePropertyValue<any>,
-    height: `${DECK_HEIGHT}px`,
-    width: `${DECK_WIDTH}px`,
-    // margin: 5,
     cursor: 'pointer',
 };
 
@@ -14,7 +12,7 @@ export const FIRST_CARD_STYLE = {
     position: 'absolute' as StylePropertyValue<any>,
     top: 0,
     left: 0,
-    bg: '#D1495B',
+    bg: 'firstCard',
     height: '100%',
     width: '100%',
     zIndex: 100,
@@ -24,7 +22,7 @@ export const SECOND_CARD_STYLE = {
     position: 'absolute' as StylePropertyValue<any>,
     top: '4px',
     left: '4px',
-    bg: '#A755C2',
+    bg: 'secondCard',
     height: '100%',
     width: '100%',
     zIndex: 10,
@@ -41,7 +39,7 @@ export const THIRD_CARD_STYLE = {
     position: 'absolute' as StylePropertyValue<any>,
     top: '8px',
     left: '8px',
-    bg: '#B07C9E',
+    bg: 'thirdCard',
     height: '100%',
     width: '100%',
     zIndex: 1,
@@ -63,5 +61,4 @@ export const BOTTOM_BOX_STYLE = {
     zIndex: 100,
     p: 3,
     color: 'white',
-    // filter: 'blur(2px)',
 };

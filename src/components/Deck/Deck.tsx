@@ -1,5 +1,6 @@
 /** @jsxImportSource theme-ui */
 import { ReactElement, useState, useCallback } from 'react';
+import { Box } from 'theme-ui';
 import { Text } from 'components/Typography';
 import { DeckPropTypes } from './Deck.types';
 import {
@@ -28,29 +29,29 @@ function Deck({ deck, onDeckClick }: DeckPropTypes): ReactElement {
     }, [deck, onDeckClick]);
 
     return (
-        <div
+        <Box
             sx={WRAPPER_STYLE}
             onClick={handleDeckClick}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
         >
-            <div sx={FIRST_CARD_STYLE}></div>
-            <div
+            <Box sx={FIRST_CARD_STYLE}></Box>
+            <Box
                 sx={{
                     ...SECOND_CARD_STYLE,
                     ...(isHover && SECOND_CARD_HOVER_STYLE),
                 }}
-            ></div>
-            <div
+            ></Box>
+            <Box
                 sx={{
                     ...THIRD_CARD_STYLE,
                     ...(isHover && THIRD_CARD_HOVER_STYLE),
                 }}
-            ></div>
-            <div sx={BOTTOM_BOX_STYLE}>
+            ></Box>
+            <Box sx={BOTTOM_BOX_STYLE}>
                 <Text fontSize={3}>{deck.deckName}</Text>
-            </div>
-        </div>
+            </Box>
+        </Box>
     );
 }
 

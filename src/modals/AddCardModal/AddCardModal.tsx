@@ -1,16 +1,12 @@
 /** @jsxImportSource theme-ui */
 import { useState, useCallback } from 'react';
+import { Box } from 'theme-ui';
 import Modal from 'components/Modal';
 import Card from 'components/Card';
 import Button from 'components/Button';
-import { Text } from 'components/Typography';
+import CardContentInputs from './views/CardContentInputs';
 import { AddCardModalPropTypes } from './AddCardModal.types';
-import {
-    CONTAINER_STYLE,
-    FRONT_CONTENT_TEXT_CONTAINER_STYLE,
-    BACK_CONTENT_CONTAINER_STYLE,
-    BACK_CONTENT_TEXT_CONTAINER_STYLE,
-} from './AddCardModal.styles';
+import { CONTAINER_STYLE } from './AddCardModal.styles';
 
 function AddCardModal({ isModalOpen, onCloseModal, onAddCard }: AddCardModalPropTypes) {
     const [frontContent, setFrontContent] = useState<string>('');
@@ -32,6 +28,8 @@ function AddCardModal({ isModalOpen, onCloseModal, onAddCard }: AddCardModalProp
 
     const handleAddCard = useCallback(() => {
         onAddCard(frontContent, backContent);
+        setFrontContent('');
+        setBackContent('');
         onCloseModal();
     }, [onAddCard, frontContent, backContent, onCloseModal]);
 
@@ -42,7 +40,7 @@ function AddCardModal({ isModalOpen, onCloseModal, onAddCard }: AddCardModalProp
             onCloseModal={onCloseModal}
             direction="right"
             absoluteContent={
-                <div sx={CONTAINER_STYLE}>
+                <Box sx={CONTAINER_STYLE}>
                     <Card
                         card={{
                             uuid: '',
@@ -52,38 +50,15 @@ function AddCardModal({ isModalOpen, onCloseModal, onAddCard }: AddCardModalProp
                             backContent,
                         }}
                     />
-                </div>
+                </Box>
             }
         >
-            <div>
-                <div sx={FRONT_CONTENT_TEXT_CONTAINER_STYLE}>
-                    <Text fontFamily="heading" fontSize={3}>
-                        Front content
-                    </Text>
-                </div>
-                <textarea
-                    rows={10}
-                    cols={60}
-                    placeholder="Front Content"
-                    value={frontContent}
-                    onChange={onChangeFrontContent}
-                />
-            </div>
-
-            <div sx={BACK_CONTENT_CONTAINER_STYLE}>
-                <div sx={BACK_CONTENT_TEXT_CONTAINER_STYLE}>
-                    <Text fontFamily="heading" fontSize={3}>
-                        Back content
-                    </Text>
-                </div>
-                <textarea
-                    rows={10}
-                    cols={60}
-                    placeholder="Front Content"
-                    value={backContent}
-                    onChange={onChangeBackContent}
-                />
-            </div>
+            <CardContentInputs
+                onChangeFrontContent={onChangeFrontContent}
+                onChangeBackContent={onChangeBackContent}
+                frontContent={frontContent}
+                backContent={backContent}
+            />
 
             <Button text="Add" onClick={handleAddCard} />
         </Modal>

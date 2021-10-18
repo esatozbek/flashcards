@@ -50,6 +50,14 @@ function Modal({
         };
     }, [containerRef, onCloseModal, showModal]);
 
+    useEffect(() => {
+        if (showModal) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    }, [showModal]);
+
     if (showModal) {
         return ReactDOM.createPortal(
             <ModalContainer

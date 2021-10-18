@@ -5,16 +5,9 @@ export const CONTAINER_STYLE = {
     top: '50%',
     left: '10%',
     transform: 'translateY(-50%)',
-};
-
-export const FRONT_CONTENT_TEXT_CONTAINER_STYLE = {
-    my: 3,
-};
-
-export const BACK_CONTENT_CONTAINER_STYLE = {
-    mb: 2,
-};
-
-export const BACK_CONTENT_TEXT_CONTAINER_STYLE = {
-    my: 3,
+    '@media screen and (max-width: 1000px)': {
+        top: 3,
+        left: '50%',
+        transform: 'translateX(-50%)',
+    },
 };

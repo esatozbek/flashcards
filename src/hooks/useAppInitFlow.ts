@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useAtom } from 'jotai';
 import { decksAtom } from 'atoms/deckAtoms';
-import { cardsAtom, TCardsAtom } from 'atoms/cardAtoms';
+import { cardsAtom } from 'atoms/cardAtoms';
 
 function useAppInitFlow() {
     const [decks] = useAtom(decksAtom);
