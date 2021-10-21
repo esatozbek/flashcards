@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Box } from '@theme-ui/components';
+import { Box, Textarea } from '@theme-ui/components';
 import Button from 'components/Button';
 import { Text } from 'components/Typography';
 import { Fragment, ReactElement, useState } from 'react';
@@ -11,7 +11,7 @@ function MobileView({
     frontContent,
     backContent,
 }: any): ReactElement {
-    const [isFrontContentEditing, setFrontContentEditing] = useState(false);
+    const [isFrontContentEditing, setFrontContentEditing] = useState(true);
 
     return (
         <Box>
@@ -29,17 +29,21 @@ function MobileView({
             </Box>
 
             {isFrontContentEditing ? (
-                <textarea
-                    rows={10}
-                    cols={50}
+                <Textarea
+                    mb={3}
+                    sx={{ width: '100%' }}
+                    variant="styles.inputs.primary"
+                    rows={5}
                     placeholder="Front Content"
                     value={frontContent}
                     onChange={onChangeFrontContent}
                 />
             ) : (
-                <textarea
-                    rows={10}
-                    cols={50}
+                <Textarea
+                    mb={3}
+                    sx={{ width: '100%' }}
+                    variant="styles.inputs.primary"
+                    rows={5}
                     placeholder="Back Content"
                     value={backContent}
                     onChange={onChangeBackContent}
@@ -64,8 +68,8 @@ function DesktopOrTabletView({
                     </Text>
                 </Box>
                 <textarea
+                    sx={{ width: '100%' }}
                     rows={10}
-                    cols={50}
                     placeholder="Front Content"
                     value={frontContent}
                     onChange={onChangeFrontContent}
@@ -79,9 +83,9 @@ function DesktopOrTabletView({
                     </Text>
                 </Box>
                 <textarea
+                    sx={{ width: '100%' }}
                     rows={10}
-                    cols={50}
-                    placeholder="Front Content"
+                    placeholder="Back Content"
                     value={backContent}
                     onChange={onChangeBackContent}
                 />

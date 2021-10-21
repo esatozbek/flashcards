@@ -24,6 +24,18 @@ const theme: Theme = {
                 width: `${DECK_WIDTH}px`,
             },
         },
+        inputs: {
+            primary: {
+                fontSize: 3,
+                borderRadius: 0,
+                boxShadow: 'inset 0px 0px 0px 5px black',
+                border: 'none',
+                transition: 'all .2s',
+                p: 3,
+                backgroundColor: 'white',
+                '&:focus': { outline: 'none', boxShadow: 'inset 0px 0px 0px 2px black' },
+            },
+        },
     },
     grids: {
         deckGrid: {
@@ -61,6 +73,9 @@ const theme: Theme = {
                 transform: 'translateX(0px) translateY(0px)',
             },
         },
+    },
+    forms: {
+        input: {},
     },
     ...fonts,
 };

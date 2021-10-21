@@ -2,9 +2,16 @@
 import { ReactElement } from 'react';
 import { TextPropTypes } from './Typography.types';
 
-function Text({ children, fontSize = 2, fontFamily = 'body' }: TextPropTypes): ReactElement {
+function Text({
+    children,
+    fontSize = 2,
+    fontFamily = 'body',
+    as = 'span',
+}: TextPropTypes): ReactElement {
+    const Component = as;
+
     return (
-        <span
+        <Component
             sx={{
                 fontFamily,
                 fontWeight: 'body',
@@ -14,7 +21,7 @@ function Text({ children, fontSize = 2, fontFamily = 'body' }: TextPropTypes): R
             }}
         >
             {children}
-        </span>
+        </Component>
     );
 }
 

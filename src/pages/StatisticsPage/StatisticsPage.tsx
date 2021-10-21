@@ -1,13 +1,19 @@
 /** @jsxImportSource theme-ui */
 import { ReactElement } from 'react';
 import { useAtom } from 'jotai';
+import { Box } from 'theme-ui';
 import { Text } from 'components/Typography';
 import Deck from 'components/Deck';
 import { decksAtom } from 'atoms/deckAtoms';
-import DefaultLayout from 'layouts/DefaultLayout';
 import { statisticAtom } from 'atoms/statisticAtoms';
+import DefaultLayout from 'layouts/DefaultLayout';
 import formatSeconds from 'utils/formatSeconds';
-import { CONTAINER_STYLE, TITLE_CONTAINER_STYLE } from './StatisticPage.styles';
+import {
+    CONTAINER_STYLE,
+    TITLE_CONTAINER_STYLE,
+    DECK_AND_INFO_CONTAINER,
+} from './StatisticPage.styles';
+import InfoText from './views/InfoText';
 
 function StatisticsPage(): ReactElement {
     const [statistic] = useAtom(statisticAtom);
@@ -15,68 +21,52 @@ function StatisticsPage(): ReactElement {
 
     return (
         <DefaultLayout>
-            <div sx={CONTAINER_STYLE}>
-                <div sx={TITLE_CONTAINER_STYLE}>
+            <Box sx={CONTAINER_STYLE}>
+                <Box sx={TITLE_CONTAINER_STYLE}>
                     <Text fontSize={5}>Stats</Text>
-                </div>
+                </Box>
 
-                <div sx={{ m: 3 }}>
-                    <div>
-                        <Text fontSize={5} fontFamily="heading">
-                            Total time spent: {formatSeconds(statistic.overralSecondsSpent)}
-                        </Text>
-                    </div>
-                    <div>
-                        <Text fontSize={5} fontFamily="heading">
-                            Total practiced cards: {statistic.overralPracticedCardCount}
-                        </Text>
-                    </div>
-                    <div>
-                        <Text fontSize={5} fontFamily="heading">
-                            Total turned back cards: {statistic.overralTurnBackCount}
-                        </Text>
-                    </div>
-                </div>
+                <Box m={3}>
+                    <InfoText>
+                        Total time spent: {formatSeconds(statistic.overralSecondsSpent)}
+                    </InfoText>
+                    <InfoText>
+                        Total practiced cards: {statistic.overralPracticedCardCount}
+                    </InfoText>
+                    <InfoText>Total turned back cards: {statistic.overralTurnBackCount}</InfoText>
+                </Box>
 
-                <div sx={{ m: 3 }}>
+                <Box m={3}>
                     <Text fontSize={5}>Deck Stats</Text>
-                    <div>
+                    <Box>
                         {Object.keys(statistic.deckStatistics).map((deckId) => (
-                            <div key={deckId} sx={{ display: 'flex', mb: 4 }}>
+                            <Box key={deckId} sx={DECK_AND_INFO_CONTAINER}>
                                 <Deck deck={decks[deckId]} onDeckClick={() => {}} />
-                                <div sx={{ ml: 3 }}>
-                                    <div>
-                                        <Text fontSize={5} fontFamily="heading">
-                                            Total time spent:{' '}
-                                            {formatSeconds(
-                                                statistic.deckStatistics[deckId].secondsSpent
-                                            )}
-                                        </Text>
-                                    </div>
-                                    <div>
-                                        <Text fontSize={5} fontFamily="heading">
-                                            Practice count:{' '}
-                                            {statistic.deckStatistics[deckId].practiceCount}
-                                        </Text>
-                                    </div>
-                                    <div>
-                                        <Text fontSize={5} fontFamily="heading">
-                                            Practiced card count:{' '}
-                                            {statistic.deckStatistics[deckId].practicedCardCount}
-                                        </Text>
-                                    </div>
-                                    <div>
-                                        <Text fontSize={5} fontFamily="heading">
-                                            Turned card count:{' '}
-                                            {statistic.deckStatistics[deckId].turnBackCount}
-                                        </Text>
-                                    </div>
-                                </div>
-                            </div>
+                                <Box ml={3} mt={[3, 0, 0]}>
+                                    <InfoText>
+                                        Total time spent:{' '}
+                                        {formatSeconds(
+                                            statistic.deckStatistics[deckId].secondsSpent
+                                        )}{' '}
+                                    </InfoText>
+                                    <InfoText>
+                                        Practice count:{' '}
+                                        {statistic.deckStatistics[deckId].practiceCount}
+                                    </InfoText>
+                                    <InfoText>
+                                        Practiced card count:{' '}
+                                        {statistic.deckStatistics[deckId].practicedCardCount}
+                                    </InfoText>
+                                    <InfoText>
+                                        Turned card count:{' '}
+                                        {statistic.deckStatistics[deckId].turnBackCount}
+                                    </InfoText>
+                                </Box>
+                            </Box>
                         ))}
-                    </div>
-                </div>
-            </div>
+                    </Box>
+                </Box>
+            </Box>
         </DefaultLayout>
     );
 }
