@@ -64,7 +64,6 @@ function CardListPage(): ReactElement {
 
     const handleAddCard = useCallback(
         (frontContent: string, backContent: string) => {
-            console.log(frontContent, backContent);
             addCard({ frontContent, backContent, deckId: deck?.deckId || '' });
         },
         [addCard, deck]

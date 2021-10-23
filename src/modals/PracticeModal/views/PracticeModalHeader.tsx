@@ -6,13 +6,18 @@ import { Text } from 'components/Typography';
 import formatSeconds from 'utils/formatSeconds';
 import { serviceAtom } from 'atoms/serviceAtoms';
 import { HEADER_CONTAINER_STYLE } from '../PracticeModal.styles';
+import { TPracticeService } from 'machines/practiceMachine';
 
 function PracticeModalHeader({ deckName }: { deckName: string }): ReactElement {
-    const [{ practiceService }] = useAtom(serviceAtom);
-    const cardIdslength = useSelector(practiceService, (state) => state.context.cardIds.length);
-    const selectedCardIdx = useSelector(practiceService, (state) => state.context.selectedCardIdx);
-    const timeElapsed = useSelector(practiceService, (state) => state.context.timeElapsed);
-    const isStarted = useSelector(practiceService, (state) => state.matches('started'));
+    const [{ practiceService }] = useAtom<{ practiceService?: TPracticeService }>(serviceAtom);
+
+    const cardIdslength = useSelector(
+        practiceService!,
+        (state) => state.context.practiceCardIds.length
+    );
+    const selectedCardIdx = useSelector(practiceService!, (state) => state.context.selectedCardIdx);
+    const timeElapsed = useSelector(practiceService!, (state) => state.context.timeElapsed);
+    const isStarted = useSelector(practiceService!, (state) => state.matches('started'));
 
     return (
         <div sx={HEADER_CONTAINER_STYLE}>

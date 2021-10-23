@@ -1,22 +1,32 @@
-import { createMachine, assign } from 'xstate';
+import { createMachine, assign, Interpreter } from 'xstate';
 
-type TEvent =
+export type TEvent =
     | { type: '' }
-    | { type: 'START'; cardIds: string[] }
+    | { type: 'START'; practiceCardIds: string[] }
     | { type: 'TICK' }
     | { type: 'PREV_CARD' }
     | { type: 'NEXT_CARD' }
     | { type: 'TURN_BACK'; cardIdx: string };
 
-interface IContext {
+export interface IContext {
     startTime: number;
     endTime: number;
-    cardIds: string[];
+    practiceCardIds: string[];
     selectedCardIdx: number;
     countdown: number;
     timeElapsed: number;
     turnBackCardIdxs: Set<string>;
 }
+
+export type TPracticeService = Interpreter<
+    IContext,
+    any,
+    TEvent,
+    {
+        value: any;
+        context: IContext;
+    }
+>;
 
 const practiceMachine = createMachine<IContext, TEvent>(
     {
@@ -26,7 +36,7 @@ const practiceMachine = createMachine<IContext, TEvent>(
             startTime: 0,
             endTime: 0,
             countdown: 3,
-            cardIds: [],
+            practiceCardIds: [],
             selectedCardIdx: 0,
             timeElapsed: 0,
             turnBackCardIdxs: new Set<string>(),
@@ -37,7 +47,7 @@ const practiceMachine = createMachine<IContext, TEvent>(
                     START: {
                         target: 'starting',
                         actions: assign((context, event) => ({
-                            cardIds: event.cardIds,
+                            practiceCardIds: event.practiceCardIds,
                             startTime: new Date().getTime(),
                         })),
                     },
@@ -85,7 +95,8 @@ const practiceMachine = createMachine<IContext, TEvent>(
                             actions: assign({
                                 selectedCardIdx: (context, event) => context.selectedCardIdx + 1,
                             }),
-                            cond: (context) => context.selectedCardIdx < context.cardIds.length - 1,
+                            cond: (context) =>
+                                context.selectedCardIdx < context.practiceCardIds.length - 1,
                         },
                         { target: 'ended', actions: 'endPractice' },
                     ],

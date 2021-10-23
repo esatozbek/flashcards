@@ -67,9 +67,10 @@ function DesktopOrTabletView({
                         Front content
                     </Text>
                 </Box>
-                <textarea
+                <Textarea
+                    variant="styles.inputs.primary"
                     sx={{ width: '100%' }}
-                    rows={10}
+                    rows={5}
                     placeholder="Front Content"
                     value={frontContent}
                     onChange={onChangeFrontContent}
@@ -82,9 +83,10 @@ function DesktopOrTabletView({
                         Back content
                     </Text>
                 </Box>
-                <textarea
+                <Textarea
+                    variant="styles.inputs.primary"
                     sx={{ width: '100%' }}
-                    rows={10}
+                    rows={5}
                     placeholder="Back Content"
                     value={backContent}
                     onChange={onChangeBackContent}

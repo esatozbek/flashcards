@@ -1,9 +1,15 @@
 /** @jsxImportSource theme-ui */
 import { ReactElement, Fragment, useCallback, useRef } from 'react';
+import { useSelector } from '@xstate/react';
+import { useAtom } from 'jotai';
 import { Text } from 'components/Typography';
 import Card from 'components/Card';
+import type { TCardRef } from 'components/Card/Card.types';
 import { LeftArrowIcon, RightArrowIcon } from 'assets/svg';
 import Button from 'components/Button';
+import formatSeconds from 'utils/formatSeconds';
+import { serviceAtom } from 'atoms/serviceAtoms';
+import { cardsAtom } from 'atoms/cardAtoms';
 import {
     CONTENT_CONTAINER_STYLE,
     CONTENT_INNER_CONTAINER_STYLE,
@@ -12,23 +18,16 @@ import {
     CONTENT_BOTTOM_STYLE,
 } from '../PracticeModal.styles';
 import { PracticeModalContentPropTypes } from '../PracticeModal.types';
-import formatSeconds from 'utils/formatSeconds';
-import { TCardRef } from 'components/Card/Card.types';
-import { useAtom } from 'jotai';
-import { serviceAtom } from 'atoms/serviceAtoms';
-import { useSelector } from '@xstate/react';
-import { cardsAtom } from 'atoms/cardAtoms';
+import { TPracticeService } from 'machines/practiceMachine';
 
 const StartingContent = (): ReactElement => {
-    const [{ practiceService }] = useAtom(serviceAtom);
-    const countdown = useSelector(practiceService, (state) => state.context.countdown);
+    const [{ practiceService }] = useAtom<{ practiceService?: TPracticeService }>(serviceAtom);
+    const countdown = useSelector(practiceService!, (state) => state.context.countdown);
 
     return (
-        <Fragment>
-            <div sx={CONTENT_INNER_CONTAINER_STYLE}>
-                <Text fontSize={5}>{countdown}</Text>
-            </div>
-        </Fragment>
+        <div sx={CONTENT_INNER_CONTAINER_STYLE}>
+            <Text fontSize={5}>{countdown}</Text>
+        </div>
     );
 };
 
@@ -37,14 +36,14 @@ const StartedContent = ({
     onPrevCard,
 }: Partial<PracticeModalContentPropTypes>): ReactElement => {
     const cardRef = useRef<TCardRef>(null);
-    const [{ practiceService }] = useAtom(serviceAtom);
-    const selectedCardIdx = useSelector(practiceService, (state) => state.context.selectedCardIdx);
-    const cardIds = useSelector(practiceService, (state) => state.context.cardIds);
+    const [{ practiceService }] = useAtom<{ practiceService?: TPracticeService }>(serviceAtom);
+    const selectedCardIdx = useSelector(practiceService!, (state) => state.context.selectedCardIdx);
+    const cardIds = useSelector(practiceService!, (state) => state.context.practiceCardIds);
     const [cards] = useAtom(cardsAtom);
     const currentCard = cards[cardIds[selectedCardIdx]];
 
     const handleTurnCard = useCallback(() => {
-        practiceService.send('TURN_BACK', { cardIdx: selectedCardIdx });
+        practiceService!.send('TURN_BACK', { cardIdx: selectedCardIdx });
         cardRef.current?.turnCard?.();
     }, [cardRef, practiceService, selectedCardIdx]);
 
@@ -70,8 +69,8 @@ const StartedContent = ({
 };
 
 const EndedContent = ({ onEndPractice }: Partial<PracticeModalContentPropTypes>): ReactElement => {
-    const [{ practiceService }] = useAtom(serviceAtom);
-    const timeElapsed = useSelector(practiceService, (state) => state.context.timeElapsed) || 0;
+    const [{ practiceService }] = useAtom<{ practiceService?: TPracticeService }>(serviceAtom);
+    const timeElapsed = useSelector(practiceService!, (state) => state.context.timeElapsed) || 0;
 
     return (
         <Fragment>

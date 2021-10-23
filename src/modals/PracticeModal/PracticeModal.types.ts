@@ -6,6 +6,7 @@ export type PracticeModalPropTypes = {
 
 export type PracticeFormPropTypes = {
     onStartPractice: (isShuffle: boolean, cardNumber: number) => void;
+    defaultCardNumber?: number;
 };
 
 export type PracticeModalContentPropTypes = {

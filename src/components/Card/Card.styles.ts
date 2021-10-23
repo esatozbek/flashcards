@@ -30,9 +30,9 @@ export const FRONT_CONTAINER = {
 };
 
 export const FRONT_CONTENT = {
-    margin: 3,
-    backgroundColor: 'rgba(0, 0, 0, .2)',
-    padding: 3,
+    margin: 2,
+    backgroundColor: 'rgba(256, 256, 256, .2)',
+    padding: 2,
     borderRadius: '16px',
     wordBreak: 'break-word' as StylePropertyValue<any>,
 };

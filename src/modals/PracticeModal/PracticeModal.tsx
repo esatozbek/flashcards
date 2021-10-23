@@ -1,41 +1,44 @@
 /** @jsxImportSource theme-ui */
-import { Fragment, ReactElement, useState, useCallback, useEffect } from 'react';
+import { Fragment, ReactElement, useCallback, useEffect } from 'react';
 import { useAtom } from 'jotai';
-import { useInterpret, useSelector } from '@xstate/react';
 import Modal from 'components/Modal';
-import practiceMachine from 'machines/practiceMachine';
-import { setServiceAtom } from 'atoms/serviceAtoms';
-import { decksAtom } from 'atoms/deckAtoms';
 import { appendPracticeStatisticsAtom } from 'atoms/statisticAtoms';
+import shuffleArray from 'utils/shuffleArray';
 import PracticeForm from './views/PracticeForm';
 import PracticeModalContent from './views/PracticeModalContent';
 import PracticeModalHeader from './views/PracticeModalHeader';
 import { PracticeModalPropTypes } from './PracticeModal.types';
+import { usePracticeModel, usePracticeService } from './PracticeModal.hooks';
 
 function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTypes): ReactElement {
-    const practiceService = useInterpret(practiceMachine);
-    const [started, setStarted] = useState<boolean>(false);
-    const [decks] = useAtom(decksAtom);
+    const { practiceService } = usePracticeService();
     const [, appendPracticeStatistics] = useAtom(appendPracticeStatisticsAtom);
-    const [, setService] = useAtom(setServiceAtom);
 
-    const cardIds = useSelector(practiceService, (state) => state.context.cardIds);
-    const turnBackCardIdxs = useSelector(
+    const { selectedDeck, practiceCardIds, turnBackCardIdxs, value, started } = usePracticeModel(
         practiceService,
-        (state) => state.context.turnBackCardIdxs
+        deckId
     );
-    const value = useSelector(practiceService, (state) => state.value);
 
     useEffect(() => {
-        setService({ serviceKey: 'practiceService', service: practiceService });
-    }, [practiceService, setService]);
+        if (showModal) {
+            practiceService.start();
+        } else {
+            practiceService.stop();
+        }
+
+        return () => {
+            practiceService.stop();
+        };
+    }, [showModal, practiceService]);
 
     const handleStartPractice = useCallback(
         (isShuffle: boolean, cardNumber: number) => {
-            setStarted(true);
-            practiceService.send('START', { cardIds: decks[deckId].cardIds });
+            let cardIds = [...selectedDeck.cardIds];
+            if (isShuffle) cardIds = shuffleArray(cardIds);
+            cardIds = cardIds.slice(0, cardNumber);
+            practiceService.send('START', { practiceCardIds: cardIds });
         },
-        [setStarted, practiceService, decks, deckId]
+        [practiceService, selectedDeck]
     );
 
     const handleNextCard = useCallback(() => {
@@ -50,13 +53,13 @@ function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTyp
         (timeElapsed: number) => {
             appendPracticeStatistics({
                 timeSpent: timeElapsed,
-                practicedCardCount: cardIds.length,
+                practicedCardCount: practiceCardIds.length,
                 deckId,
                 turnBackCount: turnBackCardIdxs.size,
             });
             onCloseModal();
         },
-        [onCloseModal, appendPracticeStatistics, cardIds, deckId, turnBackCardIdxs]
+        [onCloseModal, appendPracticeStatistics, practiceCardIds, deckId, turnBackCardIdxs]
     );
 
     return (
@@ -67,7 +70,7 @@ function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTyp
             direction="right"
             absoluteContent={
                 <Fragment>
-                    <PracticeModalHeader deckName={decks[deckId].deckName} />
+                    <PracticeModalHeader deckName={selectedDeck.deckName} />
 
                     <PracticeModalContent
                         currentState={value.toString()}
@@ -79,7 +82,10 @@ function PracticeModal({ showModal, onCloseModal, deckId }: PracticeModalPropTyp
             }
             modalBodyVisible={!started}
         >
-            <PracticeForm onStartPractice={handleStartPractice} />
+            <PracticeForm
+                onStartPractice={handleStartPractice}
+                defaultCardNumber={selectedDeck.cardIds.length}
+            />
         </Modal>
     );
 }

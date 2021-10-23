@@ -7,9 +7,12 @@ import Button from 'components/Button';
 import { MODAL_ROW_STYLE } from '../PracticeModal.styles';
 import { PracticeFormPropTypes } from '../PracticeModal.types';
 
-function PracticeForm({ onStartPractice }: PracticeFormPropTypes): ReactElement {
+function PracticeForm({
+    onStartPractice,
+    defaultCardNumber = 0,
+}: PracticeFormPropTypes): ReactElement {
     const [isShuffle, setShuffle] = useState<boolean>(false);
-    const [cardNumber, setCardNumber] = useState<number>(0);
+    const [cardNumber, setCardNumber] = useState<number>(defaultCardNumber);
 
     const handleShuffleChanged = useCallback(
         (e: boolean) => {
@@ -36,6 +39,9 @@ function PracticeForm({ onStartPractice }: PracticeFormPropTypes): ReactElement 
                     Card Number
                 </Text>
                 <Input
+                    type="number"
+                    min={1}
+                    max={defaultCardNumber}
                     placeholder="All"
                     value={cardNumber.toString()}
                     onChange={handleCardNumberChanged}

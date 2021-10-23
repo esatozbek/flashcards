@@ -2,7 +2,7 @@
 import { Input as ThemeInput } from '@theme-ui/components';
 import { InputPropTypes } from './Input.types';
 
-function Input({ placeholder, value, onChange }: InputPropTypes) {
+function Input({ placeholder, value, onChange, ...props }: InputPropTypes) {
     return (
         <ThemeInput
             variant="styles.inputs.primary"
@@ -10,6 +10,7 @@ function Input({ placeholder, value, onChange }: InputPropTypes) {
             placeholder={placeholder}
             value={value}
             onChange={onChange}
+            {...props}
         />
     );
 }

@@ -16,7 +16,9 @@ const theme: Theme = {
     },
     styles: {
         root: {
-            body: {},
+            body: {
+                overflowX: 'hidden',
+            },
         },
         boxes: {
             deck: {
