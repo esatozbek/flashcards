@@ -46,31 +46,18 @@ const practiceMachine = createMachine<IContext, TEvent>(
                 on: {
                     START: {
                         target: 'starting',
-                        actions: assign((context, event) => ({
-                            practiceCardIds: event.practiceCardIds,
-                            startTime: new Date().getTime(),
-                        })),
+                        actions: 'start',
                     },
                 },
             },
             starting: {
                 invoke: {
-                    src: (context) => (cb) => {
-                        const interval = setInterval(() => {
-                            cb('TICK');
-                        }, 1000);
-
-                        return () => {
-                            clearInterval(interval);
-                        };
-                    },
+                    src: 'countdown',
                 },
                 on: {
                     TICK: [
                         {
-                            actions: assign({
-                                countdown: (context: IContext, event) => context.countdown - 1,
-                            }),
+                            actions: 'tickCountdown',
                             cond: (context: any) => context.countdown > 1,
                         } as any,
                         { target: 'started' },
@@ -79,22 +66,12 @@ const practiceMachine = createMachine<IContext, TEvent>(
             },
             started: {
                 invoke: {
-                    src: (context) => (cb) => {
-                        const interval = setInterval(() => {
-                            cb('TICK');
-                        }, 1000);
-
-                        return () => {
-                            clearInterval(interval);
-                        };
-                    },
+                    src: 'countdown',
                 },
                 on: {
                     NEXT_CARD: [
                         {
-                            actions: assign({
-                                selectedCardIdx: (context, event) => context.selectedCardIdx + 1,
-                            }),
+                            actions: 'goNextCard',
                             cond: (context) =>
                                 context.selectedCardIdx < context.practiceCardIds.length - 1,
                         },
@@ -102,24 +79,17 @@ const practiceMachine = createMachine<IContext, TEvent>(
                     ],
                     PREV_CARD: [
                         {
-                            actions: assign({
-                                selectedCardIdx: (context, event) => context.selectedCardIdx - 1,
-                            }),
+                            actions: 'returnPrevCard',
                             cond: (context) => context.selectedCardIdx > 0,
                         },
                     ],
                     TURN_BACK: [
                         {
-                            actions: assign({
-                                turnBackCardIdxs: (context, event) =>
-                                    context.turnBackCardIdxs.add(event.cardIdx),
-                            }),
+                            actions: 'turnCardBack',
                         },
                     ],
                     TICK: {
-                        actions: assign({
-                            timeElapsed: (context, event) => context.timeElapsed + 1,
-                        }),
+                        actions: 'tickTimeElapsed',
                     },
                 },
             },
@@ -133,6 +103,36 @@ const practiceMachine = createMachine<IContext, TEvent>(
             endPractice: assign<IContext, any>({
                 endTime: new Date().getTime(),
             }),
+            tickCountdown: assign({
+                countdown: (context: IContext, event) => context.countdown - 1,
+            }),
+            start: assign<IContext, any>((context, event) => ({
+                practiceCardIds: event.practiceCardIds,
+                startTime: new Date().getTime(),
+            })),
+            goNextCard: assign({
+                selectedCardIdx: (context, event) => context.selectedCardIdx + 1,
+            }),
+            returnPrevCard: assign({
+                selectedCardIdx: (context, event) => context.selectedCardIdx - 1,
+            }),
+            turnCardBack: assign<IContext, any>({
+                turnBackCardIdxs: (context, event) => context.turnBackCardIdxs.add(event.cardIdx),
+            }),
+            tickTimeElapsed: assign({
+                timeElapsed: (context, event) => context.timeElapsed + 1,
+            }),
+        },
+        services: {
+            countdown: (context) => (cb) => {
+                const interval = setInterval(() => {
+                    cb('TICK');
+                }, 1000);
+
+                return () => {
+                    clearInterval(interval);
+                };
+            },
         },
     }
 );
